@@ -6,10 +6,10 @@
     <title>هِمّة - نظام إدارة حلقات القرآن الكريم</title>
 
     <!-- PWA Icons & Manifest Configuration -->
-    <link rel="icon" type="image/png" sizes="192x192" href="https://img.icons8.com/color/192/quran.png">
-    <link rel="apple-touch-icon" href="https://img.icons8.com/color/192/quran.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
     
-    <link rel="manifest" href='data:application/manifest+json,{"name":"هِمّة - إدارة الحلقات","short_name":"هِمّة","start_url":".","display":"standalone","background_color":"#FCF7EC","theme_color":"#2C3E35","icons":[{"src":"https://img.icons8.com/color/192/quran.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"https://img.icons8.com/color/512/quran.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
+    <link rel="manifest" href='data:application/manifest+json,{"name":"هِمّة - إدارة الحلقات","short_name":"هِمّة","start_url":".","display":"standalone","background_color":"#FCF7EC","theme_color":"#2C3E35","icons":[{"src":"icon.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"icon.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
     <meta name="theme-color" content="#2C3E35">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -56,8 +56,8 @@
     <header class="sticky top-0 z-30 glass-panel border-b border-olive/30 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-sage/50 rounded-xl flex items-center justify-center border border-olive/30">
-                    <i data-lucide="book-open" class="w-5 h-5 text-forest"></i>
+                <div class="w-10 h-10 bg-sage/50 rounded-xl flex items-center justify-center border border-olive/30 overflow-hidden">
+                    <img src="icon.png" alt="Logo" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h1 class="text-xl font-bold text-forest leading-none">هِمّة</h1>
@@ -213,7 +213,6 @@
     <script>
         const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V1';
 
-        // Initial Data including Circle 2 (زاد الميعاد)
         let appData = {
             activeCircleId: 'circle_2',
             circles: [
@@ -278,14 +277,12 @@
         function renderAll() {
             const circle = getActiveCircle();
             
-            // Render Circle Selector
             const selector = document.getElementById('circle-selector');
             selector.innerHTML = '';
             appData.circles.forEach(c => {
                 selector.innerHTML += `<option value="${c.id}" ${c.id === appData.activeCircleId ? 'selected' : ''}>${c.circleName} (${c.mosqueName})</option>`;
             });
 
-            // Fill Form inputs
             document.getElementById('input-mosque').value = circle.mosqueName || '';
             document.getElementById('input-circle-name').value = circle.circleName || '';
             document.getElementById('input-teacher').value = circle.teacherName || '';
@@ -358,4 +355,115 @@
             const student = circle.students.find(s => s.id === studentId);
             if (!student) return;
 
- 
+            const today = getTodayDateStr();
+            const index = student.history.indexOf(today);
+            if (index > -1) student.history.splice(index, 1);
+            else student.history.push(today);
+
+            saveData();
+        }
+
+        function renderStudentsTable() {
+            const tbody = document.getElementById('student-tbody');
+            tbody.innerHTML = '';
+            const circle = getActiveCircle();
+            const today = getTodayDateStr();
+            const searchQuery = (document.getElementById('search-student-input')?.value || '').trim().toLowerCase();
+
+            const filtered = circle.students.filter(s => s.name.toLowerCase().includes(searchQuery));
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate">لا توجد طالبات.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(student => {
+                const isPresent = student.history.includes(today);
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-sage/10 transition";
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-forest">${student.name}</td>
+                    <td class="p-3 text-center">
+                        <button onclick="toggleAttendance('${student.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${isPresent ? 'bg-forest text-cream' : 'bg-sage/40 text-forest border border-olive/30'}">
+                            ${isPresent ? '✓ تم التسجيل' : 'تسجيل اليوم'}
+                        </button>
+                    </td>
+                    <td class="p-3 text-center font-bold text-forest">${student.history.length} أيام</td>
+                    <td class="p-3 text-center"><span class="text-xs font-bold bg-sage/30 px-2.5 py-1 rounded-full">♥️ 1 متتابع</span></td>
+                    <td class="p-3 text-center"><span class="text-xs text-emerald-700 font-bold">منتظمة</span></td>
+                    <td class="p-3 text-center">
+                        <button onclick="deleteStudent('${student.id}')" class="text-red-500 hover:text-red-700 p-1"><i data-lucide="user-x" class="w-4 h-4"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteStudent(id) {
+            const circle = getActiveCircle();
+            if (confirm("حذف الطالبة؟")) {
+                circle.students = circle.students.filter(s => s.id !== id);
+                saveData();
+            }
+        }
+
+        function renderExportTable() {
+            const tbody = document.getElementById('export-table-tbody');
+            tbody.innerHTML = '';
+            const circle = getActiveCircle();
+            const today = getTodayDateStr();
+
+            let presentCount = 0;
+            circle.students.forEach(s => { if (s.history.includes(today)) presentCount++; });
+
+            document.getElementById('card-present-count').innerText = presentCount;
+            document.getElementById('card-total-count').innerText = circle.students.length;
+
+            circle.students.forEach((s, idx) => {
+                const isPresent = s.history.includes(today);
+                tbody.innerHTML += `
+                    <tr style="border-bottom: 1px solid #E2DCD0; background-color: ${idx % 2 === 0 ? '#FFF' : '#FCF7EC'};">
+                        <td style="padding: 8px; font-weight: bold;">${s.name}</td>
+                        <td style="padding: 8px; text-align: center; color: ${isPresent ? '#2C3E35' : '#991B1B'}; font-weight: bold;">${isPresent ? 'حاضرة' : 'غائبة'}</td>
+                        <td style="padding: 8px; text-align: center;">${s.history.length}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderLeaderboard() {
+            const grid = document.getElementById('top-students-grid');
+            grid.innerHTML = '<div class="col-span-full text-center py-6 text-slate">تظهر هنا الطالبات المتميزات فور وصولهن لـ 5 أيام متتابعة.</div>';
+        }
+
+        function exportAttendanceCard() {
+            const target = document.getElementById('export-card-target');
+            html2canvas(target, { scale: 2, backgroundColor: '#FCF7EC' }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `تقرير_${getActiveCircle().circleName}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+        }
+
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+            } else {
+                alert("لتثبيت التطبيق على الهاتف مباشرة:\nافتحي قائمة المتصفح (الثلاث نقاط) ثم اختاري 'إضافة إلى الشاشة الرئيسية / Add to Home Screen'");
+            }
+        }
+    </script>
+</body>
+</html>
