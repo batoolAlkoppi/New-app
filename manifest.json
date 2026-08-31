@@ -1,0 +1,22 @@
+{
+  "name": "هِمّة - إدارة الحلقات",
+  "short_name": "هِمّة",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FCF7EC",
+  "theme_color": "#2C3E35",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
