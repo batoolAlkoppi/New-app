@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>هِمّة - نظام إدارة حلقات القرآن الكريم</title>
-    <!-- PWA Icons & Manifest Configuration -->
-<link rel="icon" type="image/png" sizes="192x192" href="icon.png?v=2">
-<link rel="apple-touch-icon" href="icon.png?v=2">
 
-<link rel="manifest" href='data:application/manifest+json,{"name":"هِمّة - إدارة الحلقات","short_name":"هِمّة","start_url":".","display":"standalone","background_color":"#FCF7EC","theme_color":"#2C3E35","icons":[{"src":"icon.png?v=2","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"icon.png?v=2","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
+    <!-- PWA Icons & Manifest Configuration -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icon.png?v=3">
+    <link rel="apple-touch-icon" href="icon.png?v=3">
+    
+    <link rel="manifest" href='data:application/manifest+json,{"name":"هِمّة - إدارة الحلقات","short_name":"هِمّة","start_url":".","display":"standalone","background_color":"#FCF7EC","theme_color":"#2C3E35","icons":[{"src":"icon.png?v=3","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"icon.png?v=3","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
     <meta name="theme-color" content="#2C3E35">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,12 +52,34 @@
 </head>
 <body class="h-full flex flex-col min-h-screen justify-between selection:bg-sage selection:text-forest">
 
+    <!-- WELCOME / SPLASH SCREEN -->
+    <div id="splash-screen" class="fixed inset-0 z-50 bg-cream flex flex-col items-center justify-center p-6 text-center">
+        <div class="max-w-md w-full space-y-6 flex flex-col items-center">
+            <h2 class="font-amiri text-2xl font-bold text-forest">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
+            
+            <div class="w-32 h-32 bg-sage/40 rounded-3xl p-2 border-2 border-olive/50 shadow-lg flex items-center justify-center">
+                <img src="icon.png?v=3" alt="شعار هِمّة" class="w-full h-full object-cover rounded-2xl">
+            </div>
+
+            <h1 class="text-4xl font-extrabold text-forest">هِمّة</h1>
+            
+            <p class="font-amiri text-lg text-forest/90 leading-relaxed bg-sage/30 p-4 rounded-2xl border border-olive/30 shadow-sm">
+                ﴿ وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا ۚ وَإِنَّ اللَّهَ لَمَعَ الْمُحْسِنِينَ ﴾
+            </p>
+
+            <button onclick="enterApp()" class="w-full bg-forest text-cream font-bold py-3.5 px-6 rounded-2xl shadow-md hover:bg-forest/90 transition text-base flex items-center justify-center gap-2">
+                ابدأي التطبيق
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- HEADER -->
     <header class="sticky top-0 z-30 glass-panel border-b border-olive/30 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-sage/50 rounded-xl flex items-center justify-center border border-olive/30 overflow-hidden">
-                    <img src="icon.png" alt="Logo" class="w-full h-full object-cover">
+                    <img src="icon.png?v=3" alt="Logo" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h1 class="text-xl font-bold text-forest leading-none">هِمّة</h1>
@@ -257,6 +280,10 @@
             lucide.createIcons();
         });
 
+        function enterApp() {
+            document.getElementById('splash-screen').classList.add('hidden');
+        }
+
         function loadData() {
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
@@ -450,17 +477,22 @@
             document.getElementById(tabId).classList.remove('hidden');
         }
 
+        // PWA DIRECT INSTALL LOGIC
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
         });
 
-        function installPWA() {
+        async function installPWA() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    deferredPrompt = null;
+                }
             } else {
-                alert("لتثبيت التطبيق على الهاتف مباشرة:\nافتحي قائمة المتصفح (الثلاث نقاط) ثم اختاري 'إضافة إلى الشاشة الرئيسية / Add to Home Screen'");
+                alert("التطبيق مثبت مسبقاً أو أن متصفحك يطلب تثبيته عبر خيار (إضافة إلى الشاشة الرئيسية) من قائمة المتصفح.");
             }
         }
     </script>
