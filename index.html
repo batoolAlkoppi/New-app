@@ -47,11 +47,12 @@
         .heart-badge {
             position: relative;
             display: inline-flex;
-            items-center: center;
+            align-items: center;
             justify-content: center;
             width: 28px;
             height: 28px;
             transition: all 0.3s ease;
+            margin: 0 auto;
         }
         .heart-badge svg {
             width: 100%;
@@ -245,9 +246,9 @@
                     <table class="w-full text-right text-xs border-collapse whitespace-nowrap">
                         <thead>
                             <tr class="bg-sage/30 text-forest font-bold border-b border-olive/30">
-                                <th class="p-2.5">الاسم</th>
-                                <th class="p-2.5 text-center">الحضور</th>
-                                <th class="p-2.5 text-center">التتابع (أيام الحضور)</th>
+                                <th class="p-2.5 border-l border-olive/20">الاسم</th>
+                                <th class="p-2.5 text-center border-l border-olive/20">الحضور</th>
+                                <th class="p-2.5 text-center border-l border-olive/20" style="min-width: 110px;">التتابع (أيام الحضور)</th>
                                 <th class="p-2.5 text-center">إجراءات</th>
                             </tr>
                         </thead>
@@ -256,7 +257,7 @@
                 </div>
             </div>
 
-            <!-- EXPORT TARGET WITH CIRCLE STATS AND SIGNATURE BELOW TABLE -->
+            <!-- EXPORT TARGET WITH CLEAN COLUMN BORDERS -->
             <div class="overflow-hidden h-0 w-0 pointer-events-none">
                 <div id="export-card-target" style="width: 750px; background-color: #FCF7EC; padding: 25px; border-radius: 20px; font-family: 'Cairo', sans-serif; color: #2C3E35; border: 2px solid #AFC2AE;">
                     <div style="text-align: center; margin-bottom: 12px;">
@@ -284,23 +285,23 @@
                         </div>
                     </div>
 
-                    <!-- EXPORT TABLE -->
-                    <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 12px; background: #FFF; border-radius: 10px; overflow: hidden; border: 1px solid #E2DCD0;">
+                    <!-- EXPORT TABLE WITH BORDERS SEPARATING COLUMNS -->
+                    <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 12px; background: #FFF; border-radius: 10px; overflow: hidden; border: 1px solid #AFC2AE;">
                         <thead>
                             <tr style="background-color: #D5E4CF; font-weight: bold; color: #2C3E35;">
-                                <th style="padding: 8px 12px; text-align: right;">الطالبة</th>
-                                <th style="padding: 8px 12px; text-align: center;">حضور اليوم</th>
-                                <th style="padding: 8px 12px; text-align: center;">تتابع الأيام</th>
-                                <th style="padding: 8px 12px; text-align: center;">مجموع الحضور</th>
+                                <th style="padding: 10px 14px; text-align: right; border-left: 1px solid #AFC2AE;">الطالبة</th>
+                                <th style="padding: 10px 14px; text-align: center; border-left: 1px solid #AFC2AE;">حضور اليوم</th>
+                                <th style="padding: 10px 14px; text-align: center; border-left: 1px solid #AFC2AE; min-width: 120px;">تتابع الأيام</th>
+                                <th style="padding: 10px 14px; text-align: center;">مجموع الحضور</th>
                             </tr>
                         </thead>
                         <tbody id="export-table-tbody"></tbody>
                     </table>
 
-                    <!-- EXPORT FRAME FOOTER & SIGNATURE (BELOW TABLE) -->
+                    <!-- EXPORT FRAME FOOTER & SIGNATURE -->
                     <div style="margin-top: 18px; pt-3; border-top: 1px solid #AFC2AE; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; color: #78867B;">
                         <div>تاريخ التقرير: <span id="card-export-date">--</span></div>
-                        <div>Designed by: Batool</div>
+                        <div>Developed by Eng. Batool Al-Khobby</div>
                     </div>
                 </div>
             </div>
@@ -321,15 +322,59 @@
 
         const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V3';
 
-        let appData = {
-            activeCircleId: null,
-            circles: []
-        };
-
         function getTodayDateStr() {
             const today = new Date();
             return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
         }
+
+        const todayDate = getTodayDateStr();
+
+        // Default Data populated from the provided report image
+        const defaultInitialData = {
+            activeCircleId: 'circle_ghayth_quloob',
+            circles: [
+                {
+                    id: 'circle_ghayth_quloob',
+                    mosqueName: 'المحمدي',
+                    circleName: 'غيث القلوب',
+                    teacherName: 'الآنسة ريم مسلم',
+                    students: [
+                        { id: '1', name: 'لارا الشرع', history: [todayDate] },
+                        { id: '2', name: 'بتول مذيب', history: [todayDate] },
+                        { id: '3', name: 'رؤى جهماني', history: [todayDate] },
+                        { id: '4', name: 'رولا القداح', history: [todayDate] },
+                        { id: '5', name: 'حلا الجنادي', history: [todayDate] },
+                        { id: '6', name: 'آية الخطاب', history: [todayDate] },
+                        { id: '7', name: 'اماني عمارين', history: [todayDate] },
+                        { id: '8', name: 'صبا الجنادي', history: [todayDate] },
+                        { id: '9', name: 'صفا ابو السل', history: [todayDate] },
+                        { id: '10', name: 'ملاك الحلاوات', history: [todayDate] },
+                        { id: '11', name: 'تقى كعبور', history: [todayDate] },
+                        { id: '12', name: 'سندس الشرع', history: [todayDate] },
+                        { id: '13', name: 'تيماء المذيب', history: [todayDate] },
+                        { id: '14', name: 'سمية المفعلاني', history: [todayDate] },
+                        { id: '15', name: 'جنى العمارين', history: [todayDate] },
+                        { id: '16', name: 'آية الخطيب', history: [todayDate] },
+                        { id: '17', name: 'راما حسن', history: [todayDate] },
+                        { id: '18', name: 'ربا الجنادي', history: [todayDate] },
+                        { id: '19', name: 'ايناس ابو السل', history: [todayDate] },
+                        { id: '20', name: 'رغد الخلف', history: [todayDate] },
+                        { id: '21', name: 'ريان الرفاعي', history: [todayDate] },
+                        { id: '22', name: 'بتول المذيب', history: [todayDate] },
+                        { id: '23', name: 'ايناس المذيب', history: [] },
+                        { id: '24', name: 'مروة قراعزة', history: [] },
+                        { id: '25', name: 'منار طياسنة', history: [] },
+                        { id: '26', name: 'طالبة 29', history: [] },
+                        { id: '27', name: 'براءة عمارين', history: [] },
+                        { id: '28', name: 'ملاك ابو السل', history: [] },
+                        { id: '29', name: 'آية الشولي', history: [] },
+                        { id: '30', name: 'طالبة 30', history: [] }
+                    ]
+                }
+            ]
+        };
+
+        let appData = defaultInitialData;
 
         document.addEventListener('DOMContentLoaded', () => {
             loadData();
@@ -358,7 +403,14 @@
         function loadData() {
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
-                try { appData = JSON.parse(saved); } catch (e) { console.error(e); }
+                try { 
+                    appData = JSON.parse(saved); 
+                } catch (e) { 
+                    console.error(e);
+                    appData = defaultInitialData;
+                }
+            } else {
+                saveData();
             }
         }
 
@@ -510,7 +562,6 @@
             return absentStreak >= 3;
         }
 
-        // Helper to generate Heart SVG badge with attendance count inside
         function renderHeartBadgeHTML(streakCount) {
             const fillLevel = Math.min(streakCount, 3);
             return `
@@ -562,20 +613,20 @@
                 const isWarning = checkThreeConsecutiveAbsences(student);
 
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-sage/10 transition";
+                tr.className = "hover:bg-sage/10 transition border-b border-olive/10";
                 tr.innerHTML = `
-                    <td class="p-2.5 font-bold text-forest whitespace-nowrap">
+                    <td class="p-2.5 font-bold text-forest whitespace-nowrap border-l border-olive/20">
                         <span class="inline-flex items-center gap-1">
                             ${student.name}
                             ${isWarning ? '<span title="غائبة 3 أيام متتالية" class="text-red-500 font-bold">⚠️</span>' : ''}
                         </span>
                     </td>
-                    <td class="p-2.5 text-center">
+                    <td class="p-2.5 text-center border-l border-olive/20">
                         <button onclick="toggleAttendance('${student.id}')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${isPresent ? 'bg-forest text-cream' : 'bg-sage/40 text-forest border border-olive/30'}">
                             ${isPresent ? '✓ حاضر' : 'غائب'}
                         </button>
                     </td>
-                    <td class="p-2.5 text-center">
+                    <td class="p-2.5 text-center border-l border-olive/20">
                         ${renderHeartBadgeHTML(streak)}
                     </td>
                     <td class="p-2.5 text-center">
@@ -624,10 +675,10 @@
                 const streak = getStreak(s);
                 tbody.innerHTML += `
                     <tr style="border-bottom: 1px solid #E2DCD0; background-color: ${idx % 2 === 0 ? '#FFF' : '#FCF7EC'};">
-                        <td style="padding: 8px 12px; font-weight: bold; color: #2C3E35;">${s.name}</td>
-                        <td style="padding: 8px 12px; text-align: center; color: ${isPresent ? '#047857' : '#B91C1C'}; font-weight: bold;">${isPresent ? '✓ حاضرة' : 'غائبة'}</td>
-                        <td style="padding: 8px 12px; text-align: center;">${renderHeartBadgeHTML(streak)}</td>
-                        <td style="padding: 8px 12px; text-align: center; font-weight: bold; color: #2C3E35;">${s.history.length}</td>
+                        <td style="padding: 10px 14px; font-weight: bold; color: #2C3E35; border-left: 1px solid #E2DCD0;">${s.name}</td>
+                        <td style="padding: 10px 14px; text-align: center; color: ${isPresent ? '#047857' : '#B91C1C'}; font-weight: bold; border-left: 1px solid #E2DCD0;">${isPresent ? '✓ حاضرة' : 'غائبة'}</td>
+                        <td style="padding: 10px 14px; text-align: center; border-left: 1px solid #E2DCD0;">${renderHeartBadgeHTML(streak)}</td>
+                        <td style="padding: 10px 14px; text-align: center; font-weight: bold; color: #2C3E35;">${s.history.length}</td>
                     </tr>
                 `;
             });
