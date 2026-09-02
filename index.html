@@ -299,7 +299,7 @@
                     </table>
 
                     <!-- EXPORT FRAME FOOTER & SIGNATURE -->
-                    <div style="margin-top: 18px; padding-top: 12px; border-top: 1px solid #AFC2AE; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; color: #78867B;">
+                    <div style="margin-top: 18px; pt-3; border-top: 1px solid #AFC2AE; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; color: #78867B;">
                         <div>تاريخ التقرير: <span id="card-export-date">--</span></div>
                         <div>Developed by Eng. Batool Al-Khobby</div>
                     </div>
@@ -329,52 +329,46 @@
 
         const todayDate = getTodayDateStr();
 
-        // Updated initial data matching the exact report image
+        // Default Data populated from the provided report image
         const defaultInitialData = {
-            activeCircleId: 'circle_banat',
+            activeCircleId: 'circle_ghayth_quloob',
             circles: [
                 {
-                    id: 'circle_banat',
+                    id: 'circle_ghayth_quloob',
                     mosqueName: 'المحمدي',
-                    circleName: 'حلقة البنات',
-                    teacherName: '........',
+                    circleName: 'غيث القلوب',
+                    teacherName: 'الآنسة ريم مسلم',
                     students: [
-                        { id: '1', name: 'بتول الخبي', history: [todayDate] },
-                        { id: '2', name: 'إيلاف الحريب', history: [todayDate] },
-                        { id: '3', name: 'نور خيوطي', history: [todayDate] },
-                        { id: '4', name: 'ساجدة سويداني', history: [todayDate] },
-                        { id: '5', name: 'يمان الحريري', history: [todayDate] },
-                        { id: '6', name: 'زينب الحريري', history: [todayDate] },
-                        { id: '7', name: 'ساجدة خبي', history: [todayDate] },
-                        { id: '8', name: 'سجى نصرالله', history: [todayDate] },
-                        { id: '9', name: 'هند سويداني', history: [todayDate] },
-                        { id: '10', name: 'غيداء سويداني', history: [todayDate] },
-                        { id: '11', name: 'رغد عطية', history: [todayDate] },
-                        { id: '12', name: 'آلاء مصطفى', history: [todayDate] },
-                        { id: '13', name: 'هبة نصرالله', history: [todayDate] },
-                        { id: '14', name: 'تقى جباوي', history: [todayDate] },
-                        { id: '15', name: 'بتول عمارين', history: [todayDate] },
-                        { id: '16', name: 'إيناس حرب', history: [todayDate] },
-                        { id: '17', name: 'سارة', history: [] },
-                        { id: '18', name: 'بانة', history: [] },
-                        { id: '19', name: 'ناهدة', history: [] },
-                        { id: '20', name: 'تقى الخليل', history: [] },
-                        { id: '21', name: 'زهراء الخليل', history: [] },
-                        { id: '22', name: 'غنى الخليل', history: [] },
-                        { id: '23', name: 'آية عمارين', history: [] },
-                        { id: '24', name: 'سندس عمارين', history: [] },
-                        { id: '25', name: 'براءة شرف', history: [] },
-                        { id: '26', name: 'تبارك حرب', history: [] },
-                        { id: '27', name: 'ديمة جهماني', history: [] },
-                        { id: '28', name: 'دينا جهماني', history: [] },
-                        { id: '29', name: 'صفا جندي', history: [] },
-                        { id: '30', name: 'ملاك قداح', history: [] },
-                        { id: '31', name: 'فاطمة الشولي', history: [] },
-                        { id: '32', name: 'لجين سويداني', history: [] },
-                        { id: '33', name: 'شهد عمارين', history: [] },
-                        { id: '34', name: 'زين عمارين', history: [] },
-                        { id: '35', name: 'افنان خطاب', history: [] },
-                        { id: '36', name: 'ضحى نصرالله', history: [] }
+                        { id: '1', name: 'لارا الشرع', history: [todayDate] },
+                        { id: '2', name: 'بتول مذيب', history: [todayDate] },
+                        { id: '3', name: 'رؤى جهماني', history: [todayDate] },
+                        { id: '4', name: 'رولا القداح', history: [todayDate] },
+                        { id: '5', name: 'حلا الجنادي', history: [todayDate] },
+                        { id: '6', name: 'آية الخطاب', history: [todayDate] },
+                        { id: '7', name: 'اماني عمارين', history: [todayDate] },
+                        { id: '8', name: 'صبا الجنادي', history: [todayDate] },
+                        { id: '9', name: 'صفا ابو السل', history: [todayDate] },
+                        { id: '10', name: 'ملاك الحلاوات', history: [todayDate] },
+                        { id: '11', name: 'تقى كعبور', history: [todayDate] },
+                        { id: '12', name: 'سندس الشرع', history: [todayDate] },
+                        { id: '13', name: 'تيماء المذيب', history: [todayDate] },
+                        { id: '14', name: 'سمية المفعلاني', history: [todayDate] },
+                        { id: '15', name: 'جنى العمارين', history: [todayDate] },
+                        { id: '16', name: 'آية الخطيب', history: [todayDate] },
+                        { id: '17', name: 'راما حسن', history: [todayDate] },
+                        { id: '18', name: 'ربا الجنادي', history: [todayDate] },
+                        { id: '19', name: 'ايناس ابو السل', history: [todayDate] },
+                        { id: '20', name: 'رغد الخلف', history: [todayDate] },
+                        { id: '21', name: 'ريان الرفاعي', history: [todayDate] },
+                        { id: '22', name: 'بتول المذيب', history: [todayDate] },
+                        { id: '23', name: 'ايناس المذيب', history: [] },
+                        { id: '24', name: 'مروة قراعزة', history: [] },
+                        { id: '25', name: 'منار طياسنة', history: [] },
+                        { id: '26', name: 'طالبة 29', history: [] },
+                        { id: '27', name: 'براءة عمارين', history: [] },
+                        { id: '28', name: 'ملاك ابو السل', history: [] },
+                        { id: '29', name: 'آية الشولي', history: [] },
+                        { id: '30', name: 'طالبة 30', history: [] }
                     ]
                 }
             ]
@@ -524,15 +518,6 @@
             saveData();
         }
 
-        function deleteStudent(studentId) {
-            const circle = getActiveCircle();
-            if (!circle) return;
-            if (confirm("هل أنتِ متأكدة من حذف الطالبة؟")) {
-                circle.students = circle.students.filter(s => s.id !== studentId);
-                saveData();
-            }
-        }
-
         function toggleAttendance(studentId) {
             const circle = getActiveCircle();
             if (!circle) return;
@@ -612,99 +597,90 @@
                 if (getStreak(s) >= 3) starsCount++;
             });
 
-            const total = circle.students.length;
-            const absentCount = total - presentCount;
-            updateCircleStats(total, presentCount, absentCount, starsCount);
+            const absentCount = circle.students.length - presentCount;
+            const percent = Math.round((presentCount / circle.students.length) * 100);
+
+            updateCircleStats(percent, presentCount, absentCount, starsCount);
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-5 text-slate">لا توجد نتائج مطابقة للبحث.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-5 text-slate">لا توجد نتائج.</td></tr>`;
                 return;
             }
 
-            filtered.forEach(s => {
-                const isPresent = s.history.includes(today);
-                const streak = getStreak(s);
-                const isWarning = checkThreeConsecutiveAbsences(s);
+            filtered.forEach(student => {
+                const isPresent = student.history.includes(today);
+                const streak = getStreak(student);
+                const isWarning = checkThreeConsecutiveAbsences(student);
 
                 const tr = document.createElement('tr');
-                tr.className = isWarning ? 'bg-red-50/50 hover:bg-red-100/50 transition' : 'hover:bg-sage/10 transition';
-
+                tr.className = "hover:bg-sage/10 transition border-b border-olive/10";
                 tr.innerHTML = `
-                    <td class="p-2.5 font-bold border-l border-olive/20 flex items-center justify-between">
-                        <span>${s.name}</span>
-                        ${isWarning ? '<span class="text-[10px] text-red-600 font-bold bg-red-100 px-2 py-0.5 rounded-full">غياب متصل</span>' : ''}
+                    <td class="p-2.5 font-bold text-forest whitespace-nowrap border-l border-olive/20">
+                        <span class="inline-flex items-center gap-1">
+                            ${student.name}
+                            ${isWarning ? '<span title="غائبة 3 أيام متتالية" class="text-red-500 font-bold">⚠️</span>' : ''}
+                        </span>
                     </td>
                     <td class="p-2.5 text-center border-l border-olive/20">
-                        <button onclick="toggleAttendance('${s.id}')" class="px-3 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1 mx-auto ${isPresent ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-red-100 text-red-700 border border-red-200'}">
-                            <i data-lucide="${isPresent ? 'check-circle' : 'x-circle'}" class="w-3.5 h-3.5"></i>
-                            ${isPresent ? 'حاضرة' : 'غائبة'}
+                        <button onclick="toggleAttendance('${student.id}')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${isPresent ? 'bg-forest text-cream' : 'bg-sage/40 text-forest border border-olive/30'}">
+                            ${isPresent ? '✓ حاضر' : 'غائب'}
                         </button>
                     </td>
                     <td class="p-2.5 text-center border-l border-olive/20">
                         ${renderHeartBadgeHTML(streak)}
                     </td>
                     <td class="p-2.5 text-center">
-                        <button onclick="deleteStudent('${s.id}')" class="text-red-500 hover:text-red-700 p-1 rounded-lg transition" title="حذف">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
+                        <button onclick="deleteStudent('${student.id}')" class="text-red-400 hover:text-red-600 p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
-
-            lucide.createIcons();
         }
 
-        function updateCircleStats(total, present, absent, stars) {
-            const percent = total > 0 ? Math.round((present / total) * 100) : 0;
+        function updateCircleStats(percent, present, absent, stars) {
+            document.getElementById('circle-percent-text').innerText = percent + '%';
+            document.getElementById('circle-progress').setAttribute('stroke-dasharray', `${percent}, 100`);
             
             document.getElementById('stat-present').innerText = present;
             document.getElementById('stat-absent').innerText = absent;
             document.getElementById('stat-stars').innerText = stars;
-            document.getElementById('circle-percent-text').innerText = percent + '%';
 
-            const progress = document.getElementById('circle-progress');
-            if (progress) progress.setAttribute('stroke-dasharray', `${percent}, 100`);
-
+            // Update exported card stats
+            document.getElementById('card-percent-display').innerText = percent + '%';
             document.getElementById('card-present-count').innerText = present;
             document.getElementById('card-absent-count').innerText = absent;
             document.getElementById('card-stars-count').innerText = stars;
-            document.getElementById('card-percent-display').innerText = percent + '%';
+        }
+
+        function deleteStudent(id) {
+            const circle = getActiveCircle();
+            if (!circle) return;
+            if (confirm("حذف الطالبة؟")) {
+                circle.students = circle.students.filter(s => s.id !== id);
+                saveData();
+            }
         }
 
         function renderExportTable() {
             const tbody = document.getElementById('export-table-tbody');
             tbody.innerHTML = '';
             const circle = getActiveCircle();
-            if (!circle || circle.students.length === 0) return;
+            if (!circle) return;
 
             const today = getTodayDateStr();
-            
+            document.getElementById('card-export-date').innerText = today;
+
             circle.students.forEach((s, idx) => {
                 const isPresent = s.history.includes(today);
                 const streak = getStreak(s);
-
-                const tr = document.createElement('tr');
-                tr.style.backgroundColor = idx % 2 === 0 ? '#FFFFFF' : '#FCF7EC';
-                tr.style.borderBottom = '1px solid #AFC2AE';
-
-                tr.innerHTML = `
-                    <td style="padding: 8px 12px; font-weight: bold; border-left: 1px solid #AFC2AE;">${s.name}</td>
-                    <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #AFC2AE; font-weight: bold; color: ${isPresent ? '#047857' : '#b91c1c'};">
-                        ${isPresent ? '✓ حاضر' : '✕ غائب'}
-                    </td>
-                    <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #AFC2AE;">
-                        ${streak} أيام
-                    </td>
-                    <td style="padding: 8px 12px; text-align: center; font-weight: bold;">
-                        ${s.history.length}
-                    </td>
+                tbody.innerHTML += `
+                    <tr style="border-bottom: 1px solid #E2DCD0; background-color: ${idx % 2 === 0 ? '#FFF' : '#FCF7EC'};">
+                        <td style="padding: 10px 14px; font-weight: bold; color: #2C3E35; border-left: 1px solid #E2DCD0;">${s.name}</td>
+                        <td style="padding: 10px 14px; text-align: center; color: ${isPresent ? '#047857' : '#B91C1C'}; font-weight: bold; border-left: 1px solid #E2DCD0;">${isPresent ? '✓ حاضرة' : 'غائبة'}</td>
+                        <td style="padding: 10px 14px; text-align: center; border-left: 1px solid #E2DCD0;">${renderHeartBadgeHTML(streak)}</td>
+                        <td style="padding: 10px 14px; text-align: center; font-weight: bold; color: #2C3E35;">${s.history.length}</td>
+                    </tr>
                 `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('card-export-date').innerText = new Date().toLocaleDateString('ar-EG', {
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
             });
         }
 
@@ -712,55 +688,57 @@
             const grid = document.getElementById('top-students-grid');
             grid.innerHTML = '';
             const circle = getActiveCircle();
+
             if (!circle) return;
 
-            const stars = circle.students.filter(s => getStreak(s) >= 3);
+            const topStudents = circle.students.filter(s => getStreak(s) >= 3);
 
-            if (stars.length === 0) {
-                grid.innerHTML = `<div class="col-span-3 text-center py-8 text-slate font-bold">لا يوجد طالبات حققن 3 أيام متتابعة بعد.</div>`;
+            if (topStudents.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center py-6 text-slate text-xs">تظهر هنا الطالبات المتميزات فور وصولهن لـ 3 أيام متتابعة 🌟</div>';
                 return;
             }
 
-            stars.forEach(s => {
-                const streak = getStreak(s);
-                const card = document.createElement('div');
-                card.className = 'glass-panel p-4 rounded-2xl flex items-center justify-between border border-amber-300 bg-amber-50/40 shadow-sm';
-                card.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 font-bold">
-                            <i data-lucide="award" class="w-5 h-5"></i>
+            topStudents.forEach(s => {
+                grid.innerHTML += `
+                    <div class="glass-panel p-4 rounded-2xl flex items-center justify-between border-2 border-amber-200">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
+                            <span class="font-bold text-sm text-forest">${s.name}</span>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-forest text-sm">${s.name}</h4>
-                            <span class="text-[11px] text-slate">مجموع الحضور: ${s.history.length} يوم</span>
-                        </div>
+                        <span class="text-xs bg-amber-100 text-amber-800 font-bold px-2.5 py-1 rounded-full">متميزة ⭐ (${getStreak(s)} أيام)</span>
                     </div>
-                    ${renderHeartBadgeHTML(streak)}
                 `;
-                grid.appendChild(card);
             });
-
-            lucide.createIcons();
         }
 
         function exportAttendanceCard() {
-            const target = document.getElementById('export-card-target');
+            const circle = getActiveCircle();
+            if (!circle) {
+                alert("لا توجد بيانات للتصدير");
+                return;
+            }
+
             renderExportTable();
 
+            const target = document.getElementById('export-card-target');
+            
             html2canvas(target, {
                 scale: 2,
                 backgroundColor: '#FCF7EC',
                 useCORS: true
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `تقرير_حضور_${getTodayDateStr()}.png`;
+                link.download = `تقرير_${circle.circleName}_${getTodayDateStr()}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+            }).catch(err => {
+                console.error('Error generating image:', err);
+                alert('حدث خطأ أثناء تصدير الصورة.');
             });
         }
 
         function installPWA() {
-            alert('لتثبيت التطبيق: اضغطي على زر المشاركة أو القائمة في متصفحكِ ثم اختاري "الإضافة إلى الشاشة الرئيسية"');
+            alert("لتثبيت التطبيق: افتحي خيارات المتصفح واختاري 'الإضافة إلى الشاشة الرئيسية'");
         }
     </script>
 </body>
