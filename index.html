@@ -24,7 +24,8 @@
           },
           fontFamily: {
             cairo: ['Cairo', 'sans-serif'],
-            amiri: ['Amiri', 'serif']
+            amiri: ['Amiri', 'serif'],
+            cursive: ['Dancing Script', 'cursive']
           }
         }
       }
@@ -33,7 +34,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
   
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -45,6 +46,7 @@
       color: #2C3E35;
     }
     .font-amiri { font-family: 'Amiri', serif; }
+    .font-cursive { font-family: 'Dancing Script', cursive; }
     .glass-panel {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(10px);
@@ -62,15 +64,20 @@
       cursor: pointer;
     }
     .heart-badge svg { width: 100%; height: 100%; display: block; }
+    
+    /* ضبط محاذاة الرقم بالضبط في منتصف القلب */
     .heart-badge .count-number {
       position: absolute;
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 800;
       color: #fff;
-      top: 48%;
+      top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -55%);
       line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .heart-badge.fill-0 svg { color: #cbd5e1; fill: #cbd5e1; }
     .heart-badge.fill-0 .count-number { color: #475569; }
@@ -241,44 +248,71 @@
         </div>
       </div>
 
-      <!-- Hidden Export Target Template -->
+      <!-- Hidden Export Target Template (بطاقة تصدير الصورة بتصميم مزخرف ومحدد الأبعاد) -->
       <div class="overflow-hidden h-0 w-0 pointer-events-none">
-        <div id="export-card-target" style="width:750px; background-color:#FCF7EC; padding:15px 20px; border-radius:12px; font-family:'Cairo',sans-serif; color:#2C3E35; border:2px solid #AFC2AE; box-sizing:border-box;">
-          <div style="text-align:center; margin-bottom:6px;">
-            <h2 class="font-amiri" style="font-size:18px; font-weight:bold; color:#2C3E35; margin:0;">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
-          </div>
-          <div style="display:flex; justify-space-between; align-items:center; padding-bottom:8px; border-bottom:1.5px solid #AFC2AE; margin-bottom:10px;">
-            <div>
-              <div style="font-size:11px; font-weight:bold; margin-bottom:2px;">🕌 الجامع: <span id="card-display-mosque">--</span></div>
-              <h3 style="font-size:16px; font-weight:800; margin:0;">تقرير <span id="card-display-circle">--</span></h3>
-              <span style="font-size:11px; color:#64748B; font-weight:bold; display:block; margin-top:2px;">المشرفة: <span id="card-display-teacher">--</span></span>
-            </div>
-            <div style="display:flex; align-items:center; gap:10px; background-color:rgba(213,228,207,0.4); padding:6px 12px; border-radius:10px;">
-              <div style="text-align:center;">
-                <div style="font-size:15px; font-weight:800; color:#2C3E35;" id="card-percent-display">0%</div>
-                <div style="font-size:9px; color:#78867B; font-weight:bold;">نسبة الحضور</div>
+        <div id="export-card-target" style="width:650px; background-color:#FCF7EC; padding:20px 24px; border-radius:16px; font-family:'Cairo',sans-serif; color:#2C3E35; border:3px double #AFC2AE; box-sizing:border-box; position:relative;">
+          
+          <!-- الهيدر والزخرفة مع الشعار -->
+          <div style="display:flex; justify-content:space-between; items-center; margin-bottom:12px; padding-bottom:10px; border-bottom:2px solid #AFC2AE;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:42px; height:42px; background-color:#D5E4CF; border-radius:10px; display:flex; align-items:center; justify-content:center; border:1px solid #AFC2AE;">
+                <!-- شعار المسجد/هِمّة -->
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2C3E35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2L10 5H14L12 2Z"></path>
+                  <path d="M12 5V8"></path>
+                  <path d="M4 21V10L12 6L20 10V21H4Z"></path>
+                  <path d="M9 21V14C9 13 10 12 12 12C14 12 15 13 15 14V21"></path>
+                </svg>
               </div>
-              <div style="border-right:1px solid #AFC2AE; padding-right:10px; font-size:10px; font-weight:bold; line-height:1.4;">
+              <div>
+                <h2 class="font-amiri" style="font-size:20px; font-weight:bold; color:#2C3E35; margin:0; line-height:1.2;">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
+                <div style="font-size:11px; color:#78867B; font-weight:bold;">مشروع هِمّة لإدارة حلقات القرآن الكريم</div>
+              </div>
+            </div>
+            
+            <div style="text-align:left;">
+              <div style="font-size:11px; font-weight:bold; color:#78867B;">تاريخ التقرير</div>
+              <div id="card-export-date" style="font-size:12px; font-weight:800; color:#2C3E35;">--</div>
+            </div>
+          </div>
+
+          <!-- تفاصيل الحلقة والإحصائيات -->
+          <div style="display:flex; justify-content:space-between; align-items:center; background-color:rgba(213,228,207,0.35); padding:10px 14px; border-radius:12px; border:1px solid #AFC2AE; margin-bottom:12px;">
+            <div>
+              <div style="font-size:11px; font-weight:bold; color:#78867B;">🕌 <span id="card-display-mosque">--</span></div>
+              <h3 style="font-size:17px; font-weight:800; margin:2px 0 0 0; color:#2C3E35;">تقرير <span id="card-display-circle">--</span></h3>
+              <span style="font-size:11px; color:#78867B; font-weight:bold; display:block; margin-top:2px;">المشرفة: <span id="card-display-teacher">--</span></span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; background:#FFF; padding:6px 14px; border-radius:10px; border:1px solid #AFC2AE;">
+              <div style="text-align:center;">
+                <div style="font-size:16px; font-weight:800; color:#2C3E35;" id="card-percent-display">0%</div>
+                <div style="font-size:9px; color:#78867B; font-weight:bold;">الحضور</div>
+              </div>
+              <div style="border-right:1px solid #AFC2AE; padding-right:12px; font-size:10px; font-weight:bold; line-height:1.4;">
                 <div>الحاضرات: <span id="card-present-count" style="color:#047857;">0</span></div>
                 <div>الغياب: <span id="card-absent-count" style="color:#b91c1c;">0</span></div>
                 <div>المتميزات: <span id="card-stars-count" style="color:#d97706;">0</span></div>
               </div>
             </div>
           </div>
-          <table style="width:100%; border-collapse:collapse; text-align:right; font-size:10.5px; background:#FFF; border-radius:6px; overflow:hidden; border:1px solid #AFC2AE;">
+
+          <!-- جدول الطالبات -->
+          <table style="width:100%; border-collapse:collapse; text-align:right; font-size:11px; background:#FFF; border-radius:8px; overflow:hidden; border:1px solid #AFC2AE;">
             <thead>
               <tr style="background-color:#D5E4CF; font-weight:bold; color:#2C3E35;">
-                <th style="padding:4px 8px; text-align:right; border-left:1px solid #AFC2AE;">الطالبة</th>
-                <th style="padding:4px 8px; text-align:center; border-left:1px solid #AFC2AE; width:90px;">حضور اليوم</th>
-                <th style="padding:4px 8px; text-align:center; border-left:1px solid #AFC2AE; width:90px;">تتابع الأيام</th>
-                <th style="padding:4px 8px; text-align:center; width:90px;">مجموع الحضور</th>
+                <th style="padding:5px 10px; text-align:right; border-left:1px solid #AFC2AE;">الطالبة</th>
+                <th style="padding:5px 10px; text-align:center; border-left:1px solid #AFC2AE; width:95px;">حضور اليوم</th>
+                <th style="padding:5px 10px; text-align:center; border-left:1px solid #AFC2AE; width:95px;">تتابع الأيام</th>
+                <th style="padding:5px 10px; text-align:center; width:95px;">مجموع الحضور</th>
               </tr>
             </thead>
             <tbody id="export-table-tbody"></tbody>
           </table>
-          <div style="margin-top:8px; padding-top:6px; border-top:1px solid #AFC2AE; display:flex; justify-content:space-between; align-items:center; font-size:9.5px; font-weight:bold; color:#78867B;">
-            <div>تاريخ التقرير: <span id="card-export-date">--</span></div>
-            <div>Developed by Eng. Batool Al-Khobby</div>
+
+          <!-- الفوتر وبصمة الحقوق بخط مائل إنجليزي -->
+          <div style="margin-top:12px; pt-8px; border-top:1px solid #AFC2AE; display:flex; justify-space-between; align-items:center;">
+            <div style="font-size:10px; font-weight:bold; color:#78867B;">نظام هِمّة إدارة حلقات القرآن الكريم</div>
+            <div class="font-cursive" style="font-size:16px; font-weight:700; color:#2C3E35; letter-spacing:0.5px;">Developed by Batool</div>
           </div>
         </div>
       </div>
@@ -463,7 +497,6 @@
       }
     }
 
-    // تعديل لمنع فقدان الـ Focus أثناء الكتابة
     function updateCircleDetails() {
       const e = getActiveCircle();
       if (!e) return;
@@ -476,7 +509,6 @@
       document.getElementById('card-display-circle').textContent = e.circleName || '--';
       document.getElementById('card-display-teacher').textContent = e.teacherName || '--';
       
-      // حفظ في الـ LocalStorage دون إعادة بناء عناصر الـ DOM الكاملة
       saveData(false);
     }
 
@@ -507,7 +539,6 @@
       saveData();
     }
 
-    // حساب التتابع بناءً على آخر الجلسات المسجلة بدلاً من الأيام المتقاطعة
     function getStreak(e) {
       if (e.manualStreak !== undefined) return e.manualStreak;
       if (!e.history || e.history.length === 0) return 0;
@@ -557,7 +588,6 @@
       </div>`;
     }
 
-    // استخدام DOM API الآمن لحماية التطبيق من XSS
     function renderStudentsTable() {
       const e = document.getElementById('student-tbody');
       e.innerHTML = '';
@@ -598,7 +628,6 @@
         const tr = document.createElement('tr');
         tr.className = "hover:bg-sage/10 transition border-b border-olive/10";
 
-        // الاسم
         const tdName = document.createElement('td');
         tdName.className = "p-2.5 font-bold text-forest whitespace-nowrap border-l border-olive/20";
         const spanContainer = document.createElement('span');
@@ -614,7 +643,6 @@
         }
         tdName.appendChild(spanContainer);
 
-        // زر الحضور
         const tdAttendance = document.createElement('td');
         tdAttendance.className = "p-2.5 text-center border-l border-olive/20";
         const btnAttendance = document.createElement('button');
@@ -623,12 +651,10 @@
         btnAttendance.textContent = isPresent ? '✓ حاضر' : 'غائب';
         tdAttendance.appendChild(btnAttendance);
 
-        // التتابع
         const tdStreak = document.createElement('td');
         tdStreak.className = "p-2.5 text-center border-l border-olive/20";
         tdStreak.innerHTML = renderHeartBadgeHTML(streak, st.id);
 
-        // الإجراءات
         const tdActions = document.createElement('td');
         tdActions.className = "p-2.5 text-center";
         const btnDelete = document.createElement('button');
@@ -684,19 +710,19 @@
         tr.style.cssText = `border-bottom:1px solid #E2DCD0; background-color:${index % 2 === 0 ? '#FFF' : '#FCF7EC'};`;
 
         const tdName = document.createElement('td');
-        tdName.style.cssText = "padding:3px 8px; font-weight:bold; color:#2C3E35; border-left:1px solid #E2DCD0; line-height:1.2;";
+        tdName.style.cssText = "padding:4px 8px; font-weight:bold; color:#2C3E35; border-left:1px solid #E2DCD0; line-height:1.2;";
         tdName.textContent = st.name;
 
         const tdAtt = document.createElement('td');
-        tdAtt.style.cssText = `padding:3px 8px; text-align:center; color:${isPresent ? '#047857' : '#B91C1C'}; font-weight:bold; border-left:1px solid #E2DCD0; line-height:1.2;`;
+        tdAtt.style.cssText = `padding:4px 8px; text-align:center; color:${isPresent ? '#047857' : '#B91C1C'}; font-weight:bold; border-left:1px solid #E2DCD0; line-height:1.2;`;
         tdAtt.textContent = isPresent ? '✓ حاضرة' : 'غائبة';
 
         const tdStreak = document.createElement('td');
-        tdStreak.style.cssText = "padding:3px 8px; text-align:center; border-left:1px solid #E2DCD0; line-height:1.2;";
+        tdStreak.style.cssText = "padding:4px 8px; text-align:center; border-left:1px solid #E2DCD0; line-height:1.2;";
         tdStreak.innerHTML = renderHeartBadgeHTML(streak);
 
         const tdTotal = document.createElement('td');
-        tdTotal.style.cssText = "padding:3px 8px; text-align:center; font-weight:bold; color:#2C3E35; line-height:1.2;";
+        tdTotal.style.cssText = "padding:4px 8px; text-align:center; font-weight:bold; color:#2C3E35; line-height:1.2;";
         tdTotal.textContent = st.history.length;
 
         tr.appendChild(tdName);
