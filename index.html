@@ -1,745 +1,770 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="h-full">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هِمّة - نظام إدارة حلقات القرآن الكريم</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>هِمّة - نظام إدارة حلقات القرآن الكريم</title>
+  
+  <link rel="icon" type="image/png" sizes="192x192" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2C3E35">
 
-    <!-- PWA Icons & Manifest -->
-    <link rel="icon" type="image/png" sizes="192x192" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2C3E35">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cream: '#FCF7EC',
-                        sage: '#D5E4CF',
-                        olive: '#AFC2AE',
-                        slate: '#78867B',
-                        forest: '#2C3E35',
-                    },
-                    fontFamily: {
-                        cairo: ['Cairo', 'sans-serif'],
-                        amiri: ['Amiri', 'serif'],
-                    }
-                }
-            }
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FCF7EC',
+            sage: '#D5E4CF',
+            olive: '#AFC2AE',
+            slate: '#78867B',
+            forest: '#2C3E35'
+          },
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            amiri: ['Amiri', 'serif']
+          }
         }
-    </script>
+      }
+    }
+  </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #FCF7EC; color: #2C3E35; }
-        .font-amiri { font-family: 'Amiri', serif; }
-        .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(175, 194, 174, 0.4); }
-        
-        /* Heart Container with Number inside */
-        .heart-badge {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            transition: all 0.3s ease;
-            margin: 0 auto;
-        }
-        .heart-badge svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-        .heart-badge .count-number {
-            position: absolute;
-            font-size: 10px;
-            font-weight: 800;
-            color: #ffffff;
-            top: 48%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            line-height: 1;
-        }
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #FCF7EC;
+      color: #2C3E35;
+    }
+    .font-amiri { font-family: 'Amiri', serif; }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(175, 194, 174, 0.4);
+    }
+    .heart-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      transition: all 0.2s ease;
+      margin: 0 auto;
+      cursor: pointer;
+    }
+    .heart-badge svg { width: 100%; height: 100%; display: block; }
+    .heart-badge .count-number {
+      position: absolute;
+      font-size: 9px;
+      font-weight: 800;
+      color: #fff;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      line-height: 1;
+    }
+    .heart-badge.fill-0 svg { color: #cbd5e1; fill: #cbd5e1; }
+    .heart-badge.fill-0 .count-number { color: #475569; }
+    .heart-badge.fill-1 svg { color: #fca5a5; fill: #fca5a5; }
+    .heart-badge.fill-2 svg { color: #ef4444; fill: #ef4444; }
+    .heart-badge.fill-3 svg { color: #b91c1c; fill: #b91c1c; transform: scale(1.05); }
 
-        /* Color States */
-        .heart-badge.fill-0 svg { color: #cbd5e1; fill: #cbd5e1; }
-        .heart-badge.fill-0 .count-number { color: #475569; }
-
-        .heart-badge.fill-1 svg { color: #fca5a5; fill: #fca5a5; }
-        .heart-badge.fill-2 svg { color: #ef4444; fill: #ef4444; }
-        .heart-badge.fill-3 svg { color: #b91c1c; fill: #b91c1c; transform: scale(1.15); }
-
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: #FCF7EC; }
-        ::-webkit-scrollbar-thumb { background: #AFC2AE; border-radius: 4px; }
-    </style>
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #FCF7EC; }
+    ::-webkit-scrollbar-thumb { background: #AFC2AE; border-radius: 4px; }
+  </style>
 </head>
+
 <body class="h-full flex flex-col min-h-screen justify-between selection:bg-sage selection:text-forest">
 
-    <!-- WELCOME / SPLASH SCREEN -->
-    <div id="splash-screen" class="fixed inset-0 z-50 bg-cream flex flex-col items-center justify-center p-6 text-center">
-        <div class="max-w-md w-full space-y-6 flex flex-col items-center">
-            <h2 class="font-amiri text-2xl font-bold text-forest">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
-            
-            <div class="w-28 h-28 bg-sage/40 rounded-3xl p-2 border-2 border-olive/50 shadow-lg flex items-center justify-center">
-                <img src="icon.png" alt="شعار هِمّة" class="w-full h-full object-cover rounded-2xl" onerror="this.src='https://via.placeholder.com/100?text=هِمّة'">
-            </div>
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="fixed inset-0 z-50 bg-cream flex flex-col items-center justify-center p-6 text-center">
+    <div class="max-w-md w-full space-y-6 flex flex-col items-center">
+      <h2 class="font-amiri text-2xl font-bold text-forest">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
+      <div class="w-28 h-28 bg-sage/40 rounded-3xl p-2 border-2 border-olive/50 shadow-lg flex items-center justify-center">
+        <img src="icon.png" alt="شعار هِمّة" class="w-full h-full object-cover rounded-2xl" onerror="this.src='https://via.placeholder.com/100?text=هِمّة'">
+      </div>
+      <div>
+        <h1 class="text-4xl font-extrabold text-forest">هِمّة</h1>
+        <p class="text-xs font-semibold text-slate mt-1">نظام إدارة حلقات القرآن الكريم</p>
+      </div>
+      <p class="font-amiri text-base text-forest/90 leading-relaxed bg-sage/30 p-4 rounded-2xl border border-olive/30 shadow-sm">
+        ﴿ وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا ۚ وَإِنَّ اللَّهَ لَمَعَ الْمُحْسِنِينَ ﴾
+      </p>
+      <button onclick="enterApp()" class="w-full bg-forest text-cream font-bold py-3 px-6 rounded-2xl shadow-md hover:bg-forest/90 transition text-base flex items-center justify-center gap-2">
+        أهلاً وسهلاً بكم <i data-lucide="arrow-left" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </div>
 
-            <div>
-                <h1 class="text-4xl font-extrabold text-forest">هِمّة</h1>
-                <p class="text-xs font-semibold text-slate mt-1">نظام إدارة حلقات القرآن الكريم</p>
-            </div>
-            
-            <p class="font-amiri text-base text-forest/90 leading-relaxed bg-sage/30 p-4 rounded-2xl border border-olive/30 shadow-sm">
-                ﴿ وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا ۚ وَإِنَّ اللَّهَ لَمَعَ الْمُحْسِنِينَ ﴾
-            </p>
-
-            <button onclick="enterApp()" class="w-full bg-forest text-cream font-bold py-3 px-6 rounded-2xl shadow-md hover:bg-forest/90 transition text-base flex items-center justify-center gap-2">
-                أهلاً وسهلاً بكم
-                <i data-lucide="arrow-left" class="w-5 h-5"></i>
-            </button>
+  <!-- Header -->
+  <header class="sticky top-0 z-30 glass-panel border-b border-olive/30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-sage/50 rounded-xl flex items-center justify-center border border-olive/30 overflow-hidden">
+          <img src="icon.png" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/40?text=هـ'">
         </div>
+        <div>
+          <h1 class="text-xl font-bold text-forest leading-none">هِمّة</h1>
+          <span class="text-xs text-slate font-medium">إدارة الحلقات</span>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-2 bg-sage/20 p-1 rounded-xl border border-olive/20">
+        <button onclick="switchTab('tab-attendance')" id="dtab-attendance" class="nav-btn px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 bg-forest text-cream shadow-sm">
+          <i data-lucide="user-check" class="w-4 h-4"></i>تسجيل الحضور
+        </button>
+        <button onclick="switchTab('tab-leaderboard')" id="dtab-leaderboard" class="nav-btn px-4 py-2 rounded-lg text-xs font-bold text-forest hover:bg-sage/40 transition-all flex items-center gap-2">
+          <i data-lucide="trophy" class="w-4 h-4"></i>المتميزين
+        </button>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button id="pwa-install-btn" onclick="installPWA()" class="bg-forest hover:bg-forest/90 text-cream font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow transition border border-olive/40">
+          <i data-lucide="download-cloud" class="w-4 h-4 text-sage"></i>تثبيت التطبيق
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+    <!-- Circle Selector Container -->
+    <div class="glass-panel p-4 rounded-2xl mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-2 border-olive/40">
+      <div class="flex items-center gap-3 w-full sm:w-auto">
+        <i data-lucide="layers" class="w-5 h-5 text-forest shrink-0"></i>
+        <label class="text-xs font-bold text-forest whitespace-nowrap">الحلقة الحالية:</label>
+        <select id="circle-selector" onchange="changeActiveCircle(this.value)" class="w-full sm:w-64 bg-cream border border-olive/50 rounded-xl px-3 py-2 text-xs font-bold text-forest focus:outline-none focus:ring-2 focus:ring-olive"></select>
+      </div>
+      <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+        <button onclick="createNewCirclePrompt()" class="bg-forest text-cream px-3.5 py-2 rounded-xl text-xs font-bold hover:bg-forest/90 transition flex items-center gap-1">
+          <i data-lucide="plus" class="w-4 h-4"></i>إضافة حلقة جديدة
+        </button>
+        <button onclick="deleteActiveCircle()" class="bg-red-50 text-red-600 border border-red-200 px-3 py-2 rounded-xl text-xs font-bold hover:bg-red-100 transition flex items-center gap-1" title="حذف هذه الحلقة">
+          <i data-lucide="trash-2" class="w-4 h-4"></i>
+        </button>
+      </div>
     </div>
 
-    <!-- HEADER -->
-    <header class="sticky top-0 z-30 glass-panel border-b border-olive/30 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-sage/50 rounded-xl flex items-center justify-center border border-olive/30 overflow-hidden">
-                    <img src="icon.png" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/40?text=هـ'">
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold text-forest leading-none">هِمّة</h1>
-                    <span class="text-xs text-slate font-medium">إدارة الحلقات</span>
-                </div>
+    <!-- Attendance Tab -->
+    <section id="tab-attendance" class="tab-content space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Stats Widget -->
+        <div class="glass-panel p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-3">
+          <h4 class="text-xs font-bold text-forest/80 uppercase">نسبة الحضور اليوم</h4>
+          <div class="relative w-28 h-28 flex items-center justify-center">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+              <path class="text-sage/40" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              <path id="circle-progress" class="text-forest transition-all duration-500" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            </svg>
+            <div class="absolute flex flex-col items-center">
+              <span id="circle-percent-text" class="text-xl font-extrabold text-forest">0%</span>
             </div>
-
-            <nav class="hidden md:flex items-center gap-2 bg-sage/20 p-1 rounded-xl border border-olive/20">
-                <button onclick="switchTab('tab-attendance')" id="dtab-attendance" class="nav-btn px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 bg-forest text-cream shadow-sm">
-                    <i data-lucide="user-check" class="w-4 h-4"></i>
-                    تسجيل الحضور
-                </button>
-                <button onclick="switchTab('tab-leaderboard')" id="dtab-leaderboard" class="nav-btn px-4 py-2 rounded-lg text-xs font-bold text-forest hover:bg-sage/40 transition-all flex items-center gap-2">
-                    <i data-lucide="trophy" class="w-4 h-4"></i>
-                    المتميزين
-                </button>
-            </nav>
-
-            <div class="flex items-center gap-2">
-                <button id="pwa-install-btn" onclick="installPWA()" class="bg-forest hover:bg-forest/90 text-cream font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow transition border border-olive/40">
-                    <i data-lucide="download-cloud" class="w-4 h-4 text-sage"></i>
-                    تثبيت التطبيق
-                </button>
+          </div>
+          <div class="grid grid-cols-3 gap-2 w-full pt-2 border-t border-olive/20 text-center">
+            <div>
+              <span class="block text-[10px] text-slate font-bold">الحاضرات</span>
+              <span id="stat-present" class="text-sm font-bold text-emerald-700">0</span>
             </div>
-        </div>
-    </header>
-
-    <!-- MAIN CONTAINER -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
-
-        <!-- MULTI-CIRCLE SELECTOR BAR -->
-        <div class="glass-panel p-4 rounded-2xl mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-2 border-olive/40">
-            <div class="flex items-center gap-3 w-full sm:w-auto">
-                <i data-lucide="layers" class="w-5 h-5 text-forest shrink-0"></i>
-                <label class="text-xs font-bold text-forest whitespace-nowrap">الحلقة الحالية:</label>
-                <select id="circle-selector" onchange="changeActiveCircle(this.value)" class="w-full sm:w-64 bg-cream border border-olive/50 rounded-xl px-3 py-2 text-xs font-bold text-forest focus:outline-none focus:ring-2 focus:ring-olive">
-                </select>
+            <div>
+              <span class="block text-[10px] text-slate font-bold">الغياب</span>
+              <span id="stat-absent" class="text-sm font-bold text-red-600">0</span>
             </div>
-
-            <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-                <button onclick="createNewCirclePrompt()" class="bg-forest text-cream px-3.5 py-2 rounded-xl text-xs font-bold hover:bg-forest/90 transition flex items-center gap-1">
-                    <i data-lucide="plus" class="w-4 h-4"></i>
-                    إضافة حلقة جديدة
-                </button>
-                <button onclick="deleteActiveCircle()" class="bg-red-50 text-red-600 border border-red-200 px-3 py-2 rounded-xl text-xs font-bold hover:bg-red-100 transition flex items-center gap-1" title="حذف هذه الحلقة">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
+            <div>
+              <span class="block text-[10px] text-slate font-bold">المتميزات</span>
+              <span id="stat-stars" class="text-sm font-bold text-amber-600">0</span>
             </div>
+          </div>
         </div>
 
-        <!-- TAB 1: ATTENDANCE -->
-        <section id="tab-attendance" class="tab-content space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                
-                <!-- CIRCULAR STATS CARD -->
-                <div class="glass-panel p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-3">
-                    <h4 class="text-xs font-bold text-forest/80 uppercase">نسبة الحضور اليوم</h4>
-                    
-                    <!-- Progress Circle -->
-                    <div class="relative w-28 h-28 flex items-center justify-center">
-                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                            <path class="text-sage/40" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            <path id="circle-progress" class="text-forest transition-all duration-500" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                        </svg>
-                        <div class="absolute flex flex-col items-center">
-                            <span id="circle-percent-text" class="text-xl font-extrabold text-forest">0%</span>
-                        </div>
-                    </div>
+        <!-- Circle Details Form -->
+        <div class="glass-panel p-4 rounded-2xl space-y-3">
+          <label class="block text-xs font-bold text-forest/80 uppercase">بيانات الحلقة الحالية</label>
+          <div class="space-y-2">
+            <input type="text" id="input-mosque" placeholder="اسم الجامع" oninput="updateCircleDetails()" class="w-full bg-cream/80 border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-2 focus:ring-olive">
+            <input type="text" id="input-circle-name" placeholder="اسم الحلقة" oninput="updateCircleDetails()" class="w-full bg-cream/80 border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-2 focus:ring-olive">
+            <input type="text" id="input-teacher" placeholder="اسم المعلمة/المشرفة" oninput="updateCircleDetails()" class="w-full bg-cream/80 border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-2 focus:ring-olive">
+          </div>
+        </div>
 
-                    <!-- Details Numbers inside Card -->
-                    <div class="grid grid-cols-3 gap-2 w-full pt-2 border-t border-olive/20 text-center">
-                        <div>
-                            <span class="block text-[10px] text-slate font-bold">الحاضرات</span>
-                            <span id="stat-present" class="text-sm font-bold text-emerald-700">0</span>
-                        </div>
-                        <div>
-                            <span class="block text-[10px] text-slate font-bold">الغياب</span>
-                            <span id="stat-absent" class="text-sm font-bold text-red-600">0</span>
-                        </div>
-                        <div>
-                            <span class="block text-[10px] text-slate font-bold">المتميزات</span>
-                            <span id="stat-stars" class="text-sm font-bold text-amber-600">0</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Add Student Form -->
+        <div class="glass-panel p-4 rounded-2xl space-y-3 flex flex-col justify-between">
+          <div>
+            <label class="block text-xs font-bold text-forest/80 uppercase mb-2">إضافة طالبة جديدة</label>
+            <form onsubmit="addStudent(event)" class="flex gap-2">
+              <input type="text" id="input-student-name" placeholder="اسم الطالبة" required class="flex-grow bg-cream/80 border border-olive/40 rounded-xl px-3 py-2 text-xs text-forest focus:outline-none focus:ring-2 focus:ring-olive">
+              <button type="submit" class="bg-forest text-cream font-bold px-4 py-2 rounded-xl hover:bg-forest/90 transition flex items-center gap-1 text-xs shrink-0">
+                <i data-lucide="user-plus" class="w-4 h-4"></i>إضافة
+              </button>
+            </form>
+          </div>
+          <div class="pt-3 border-t border-olive/20 flex items-center justify-between gap-3">
+            <span class="text-xs text-slate font-medium">العدد الكلي: <strong id="student-count" class="text-forest">0</strong></span>
+            <button onclick="exportAttendanceCard()" class="bg-forest hover:bg-forest/90 text-cream font-bold px-4 py-2 rounded-xl transition text-xs flex items-center gap-2 shadow-md">
+              <i data-lucide="download" class="w-4 h-4"></i>تصدير الصورة
+            </button>
+          </div>
+        </div>
+      </div>
 
-                <div class="glass-panel p-4 rounded-2xl space-y-3">
-                    <label class="block text-xs font-bold text-forest/80 uppercase">بيانات الحلقة الحالية</label>
-                    <div class="space-y-2">
-                        <input type="text" id="input-mosque" placeholder="اسم الجامع" oninput="updateCircleDetails()" class="w-full bg-cream/80 border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-2 focus:ring-olive">
-                        <input type="text" id="input-circle-name" placeholder="اسم الحلقة" oninput="updateCircleDetails()" class="w-full bg-cream/80 border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-2 focus:ring-olive">
-                        <input type="text" id="input-teacher" placeholder="اسم المعلمة/المشرفة" oninput="updateCircleDetails()" class="w-full bg-cream/80 border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-2 focus:ring-olive">
-                    </div>
-                </div>
+      <!-- Students Attendance Table -->
+      <div class="glass-panel p-4 rounded-2xl space-y-3">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <h3 class="text-sm font-bold text-forest">جدول الحضور اليومي</h3>
+          <div class="relative w-full sm:w-64">
+            <input type="text" id="search-student-input" oninput="renderStudentsTable()" placeholder="ابحثي عن طالبة..." class="w-full bg-cream border border-olive/40 rounded-xl pr-8 pl-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-2 focus:ring-olive">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate absolute right-2.5 top-2.5"></i>
+          </div>
+        </div>
 
-                <div class="glass-panel p-4 rounded-2xl space-y-3 flex flex-col justify-between">
-                    <div>
-                        <label class="block text-xs font-bold text-forest/80 uppercase mb-2">إضافة طالبة جديدة</label>
-                        <form onsubmit="addStudent(event)" class="flex gap-2">
-                            <input type="text" id="input-student-name" placeholder="اسم الطالبة" required class="flex-grow bg-cream/80 border border-olive/40 rounded-xl px-3 py-2 text-xs text-forest focus:outline-none focus:ring-2 focus:ring-olive">
-                            <button type="submit" class="bg-forest text-cream font-bold px-4 py-2 rounded-xl hover:bg-forest/90 transition flex items-center gap-1 text-xs shrink-0">
-                                <i data-lucide="user-plus" class="w-4 h-4"></i> إضافة
-                            </button>
-                        </form>
-                    </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-right text-xs border-collapse whitespace-nowrap">
+            <thead>
+              <tr class="bg-sage/30 text-forest font-bold border-b border-olive/30">
+                <th class="p-2.5 border-l border-olive/20">الاسم</th>
+                <th class="p-2.5 text-center border-l border-olive/20">الحضور</th>
+                <th class="p-2.5 text-center border-l border-olive/20" style="min-width:110px;">التتابع (انقري للتعديل)</th>
+                <th class="p-2.5 text-center">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="student-tbody" class="divide-y divide-olive/10"></tbody>
+          </table>
+        </div>
+      </div>
 
-                    <div class="pt-3 border-t border-olive/20 flex items-center justify-between gap-3">
-                        <span class="text-xs text-slate font-medium">العدد الكلي: <strong id="student-count" class="text-forest">0</strong></span>
-                        <button onclick="exportAttendanceCard()" class="bg-forest hover:bg-forest/90 text-cream font-bold px-4 py-2 rounded-xl transition text-xs flex items-center gap-2 shadow-md">
-                            <i data-lucide="download" class="w-4 h-4"></i> تصدير الصورة
-                        </button>
-                    </div>
-                </div>
-
+      <!-- Hidden Export Target Template -->
+      <div class="overflow-hidden h-0 w-0 pointer-events-none">
+        <div id="export-card-target" style="width:750px; background-color:#FCF7EC; padding:15px 20px; border-radius:12px; font-family:'Cairo',sans-serif; color:#2C3E35; border:2px solid #AFC2AE; box-sizing:border-box;">
+          <div style="text-align:center; margin-bottom:6px;">
+            <h2 class="font-amiri" style="font-size:18px; font-weight:bold; color:#2C3E35; margin:0;">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
+          </div>
+          <div style="display:flex; justify-space-between; align-items:center; padding-bottom:8px; border-bottom:1.5px solid #AFC2AE; margin-bottom:10px;">
+            <div>
+              <div style="font-size:11px; font-weight:bold; margin-bottom:2px;">🕌 الجامع: <span id="card-display-mosque">--</span></div>
+              <h3 style="font-size:16px; font-weight:800; margin:0;">تقرير <span id="card-display-circle">--</span></h3>
+              <span style="font-size:11px; color:#64748B; font-weight:bold; display:block; margin-top:2px;">المشرفة: <span id="card-display-teacher">--</span></span>
             </div>
-
-            <!-- COMPACT CLEAN TABLE -->
-            <div class="glass-panel p-4 rounded-2xl space-y-3">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                    <h3 class="text-sm font-bold text-forest">جدول الحضور اليومي</h3>
-                    <div class="relative w-full sm:w-64">
-                        <input type="text" id="search-student-input" oninput="renderStudentsTable()" placeholder="ابحثي عن طالبة..." class="w-full bg-cream border border-olive/40 rounded-xl pr-8 pl-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-2 focus:ring-olive">
-                        <i data-lucide="search" class="w-3.5 h-3.5 text-slate absolute right-2.5 top-2.5"></i>
-                    </div>
-                </div>
-                
-                <div class="overflow-x-auto">
-                    <table class="w-full text-right text-xs border-collapse whitespace-nowrap">
-                        <thead>
-                            <tr class="bg-sage/30 text-forest font-bold border-b border-olive/30">
-                                <th class="p-2.5 border-l border-olive/20">الاسم</th>
-                                <th class="p-2.5 text-center border-l border-olive/20">الحضور</th>
-                                <th class="p-2.5 text-center border-l border-olive/20" style="min-width: 110px;">التتابع (أيام الحضور)</th>
-                                <th class="p-2.5 text-center">إجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="student-tbody" class="divide-y divide-olive/10"></tbody>
-                    </table>
-                </div>
+            <div style="display:flex; align-items:center; gap:10px; background-color:rgba(213,228,207,0.4); padding:6px 12px; border-radius:10px;">
+              <div style="text-align:center;">
+                <div style="font-size:15px; font-weight:800; color:#2C3E35;" id="card-percent-display">0%</div>
+                <div style="font-size:9px; color:#78867B; font-weight:bold;">نسبة الحضور</div>
+              </div>
+              <div style="border-right:1px solid #AFC2AE; padding-right:10px; font-size:10px; font-weight:bold; line-height:1.4;">
+                <div>الحاضرات: <span id="card-present-count" style="color:#047857;">0</span></div>
+                <div>الغياب: <span id="card-absent-count" style="color:#b91c1c;">0</span></div>
+                <div>المتميزات: <span id="card-stars-count" style="color:#d97706;">0</span></div>
+              </div>
             </div>
+          </div>
+          <table style="width:100%; border-collapse:collapse; text-align:right; font-size:10.5px; background:#FFF; border-radius:6px; overflow:hidden; border:1px solid #AFC2AE;">
+            <thead>
+              <tr style="background-color:#D5E4CF; font-weight:bold; color:#2C3E35;">
+                <th style="padding:4px 8px; text-align:right; border-left:1px solid #AFC2AE;">الطالبة</th>
+                <th style="padding:4px 8px; text-align:center; border-left:1px solid #AFC2AE; width:90px;">حضور اليوم</th>
+                <th style="padding:4px 8px; text-align:center; border-left:1px solid #AFC2AE; width:90px;">تتابع الأيام</th>
+                <th style="padding:4px 8px; text-align:center; width:90px;">مجموع الحضور</th>
+              </tr>
+            </thead>
+            <tbody id="export-table-tbody"></tbody>
+          </table>
+          <div style="margin-top:8px; padding-top:6px; border-top:1px solid #AFC2AE; display:flex; justify-content:space-between; align-items:center; font-size:9.5px; font-weight:bold; color:#78867B;">
+            <div>تاريخ التقرير: <span id="card-export-date">--</span></div>
+            <div>Developed by Eng. Batool Al-Khobby</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <!-- EXPORT TARGET WITH CLEAN COLUMN BORDERS -->
-            <div class="overflow-hidden h-0 w-0 pointer-events-none">
-                <div id="export-card-target" style="width: 750px; background-color: #FCF7EC; padding: 25px; border-radius: 20px; font-family: 'Cairo', sans-serif; color: #2C3E35; border: 2px solid #AFC2AE;">
-                    <div style="text-align: center; margin-bottom: 12px;">
-                        <h2 class="font-amiri" style="font-size: 24px; font-weight: bold; color: #2C3E35; margin: 0;">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 2px solid #AFC2AE; margin-bottom: 16px;">
-                        <div>
-                            <div style="font-size: 14px; font-weight: bold; margin-bottom: 4px;">🕌 الجامع: <span id="card-display-mosque">--</span></div>
-                            <h3 style="font-size: 20px; font-weight: 800; margin: 0;">تقرير <span id="card-display-circle">--</span></h3>
-                            <span style="font-size: 13px; color: #64748B; font-weight: bold; display: block; margin-top: 4px;">المشرفة: <span id="card-display-teacher">--</span></span>
-                        </div>
+    <!-- Leaderboard Tab -->
+    <section id="tab-leaderboard" class="tab-content hidden space-y-6">
+      <h3 class="text-sm font-bold text-forest">الطالبات المتميزات (3 جلسات متتابعة فأكثر) 🌟</h3>
+      <div id="top-students-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+    </section>
+  </main>
 
-                        <!-- Card Circular & Summary stats -->
-                        <div style="display: flex; align-items: center; gap: 15px; background-color: rgba(213, 228, 207, 0.4); padding: 10px 18px; border-radius: 16px;">
-                            <div style="text-align: center;">
-                                <div style="font-size: 18px; font-weight: 800; color: #2C3E35;" id="card-percent-display">0%</div>
-                                <div style="font-size: 10px; color: #78867B; font-weight: bold;">نسبة الحضور</div>
-                            </div>
-                            <div style="border-right: 1px solid #AFC2AE; padding-right: 12px; font-size: 11px; font-weight: bold; line-height: 1.6;">
-                                <div>الحاضرات: <span id="card-present-count" style="color: #047857;">0</span></div>
-                                <div>الغياب: <span id="card-absent-count" style="color: #b91c1c;">0</span></div>
-                                <div>المتميزات: <span id="card-stars-count" style="color: #d97706;">0</span></div>
-                            </div>
-                        </div>
-                    </div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(e => console.log(e));
+    }
 
-                    <!-- EXPORT TABLE WITH BORDERS SEPARATING COLUMNS -->
-                    <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 12px; background: #FFF; border-radius: 10px; overflow: hidden; border: 1px solid #AFC2AE;">
-                        <thead>
-                            <tr style="background-color: #D5E4CF; font-weight: bold; color: #2C3E35;">
-                                <th style="padding: 10px 14px; text-align: right; border-left: 1px solid #AFC2AE;">الطالبة</th>
-                                <th style="padding: 10px 14px; text-align: center; border-left: 1px solid #AFC2AE;">حضور اليوم</th>
-                                <th style="padding: 10px 14px; text-align: center; border-left: 1px solid #AFC2AE; min-width: 120px;">تتابع الأيام</th>
-                                <th style="padding: 10px 14px; text-align: center;">مجموع الحضور</th>
-                            </tr>
-                        </thead>
-                        <tbody id="export-table-tbody"></tbody>
-                    </table>
+    const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V3';
 
-                    <!-- EXPORT FRAME FOOTER & SIGNATURE -->
-                    <div style="margin-top: 18px; pt-3; border-top: 1px solid #AFC2AE; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; color: #78867B;">
-                        <div>تاريخ التقرير: <span id="card-export-date">--</span></div>
-                        <div>Developed by Eng. Batool Al-Khobby</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    function getTodayDateStr() {
+      const t = new Date();
+      return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+    }
 
-        <!-- TAB 2: LEADERBOARD -->
-        <section id="tab-leaderboard" class="tab-content hidden space-y-6">
-            <h3 class="text-sm font-bold text-forest">الطالبات المتميزات (3 أيام متتابعة فأكثر) 🌟</h3>
-            <div id="top-students-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
-        </section>
+    const todayDate = getTodayDateStr();
 
-    </main>
+    const defaultInitialData = {
+      activeCircleId: 'circle_ghayth_quloob',
+      circles: [{
+        id: 'circle_ghayth_quloob',
+        mosqueName: 'المحمدي',
+        circleName: 'غيث القلوب',
+        teacherName: 'الآنسة ريم مسلم',
+        students: [
+          { id: '1', name: 'لارا الشرع', history: [todayDate] },
+          { id: '2', name: 'بتول مذيب', history: [todayDate] },
+          { id: '3', name: 'رؤى جهماني', history: [todayDate] },
+          { id: '4', name: 'رولا القداح', history: [todayDate] },
+          { id: '5', name: 'حلا الجنادي', history: [todayDate] },
+          { id: '6', name: 'آية الخطاب', history: [todayDate] },
+          { id: '7', name: 'اماني عمارين', history: [todayDate] },
+          { id: '8', name: 'صبا الجنادي', history: [todayDate] },
+          { id: '9', name: 'صفا ابو السل', history: [todayDate] },
+          { id: '10', name: 'ملاك الحلاوات', history: [todayDate] },
+          { id: '11', name: 'تقى كعبور', history: [todayDate] },
+          { id: '12', name: 'سندس الشرع', history: [todayDate] },
+          { id: '13', name: 'تيماء المذيب', history: [todayDate] },
+          { id: '14', name: 'سمية المفعلاني', history: [todayDate] },
+          { id: '15', name: 'جنى العمارين', history: [todayDate] },
+          { id: '16', name: 'آية الخطيب', history: [todayDate] },
+          { id: '17', name: 'راما حسن', history: [todayDate] },
+          { id: '18', name: 'ربا الجنادي', history: [todayDate] },
+          { id: '19', name: 'ايناس ابو السل', history: [todayDate] },
+          { id: '20', name: 'رغد الخلف', history: [todayDate] },
+          { id: '21', name: 'ريان الرفاعي', history: [todayDate] },
+          { id: '22', name: 'بتول المذيب', history: [todayDate] },
+          { id: '23', name: 'ايناس المذيب', history: [] },
+          { id: '24', name: 'مروة قراعزة', history: [] },
+          { id: '25', name: 'منار طياسنة', history: [] },
+          { id: '26', name: 'طالبة 29', history: [] },
+          { id: '27', name: 'براءة عمارين', history: [] },
+          { id: '28', name: 'ملاك ابو السل', history: [] },
+          { id: '29', name: 'آية الشولي', history: [] },
+          { id: '30', name: 'طالبة 30', history: [] }
+        ]
+      }]
+    };
 
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+    let appData = defaultInitialData;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      renderAll();
+    });
+
+    function enterApp() {
+      document.getElementById('splash-screen').classList.add('hidden');
+    }
+
+    function switchTab(t) {
+      document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden'));
+      document.getElementById(t).classList.remove('hidden');
+      document.querySelectorAll('.nav-btn').forEach(e => {
+        e.className = 'nav-btn px-4 py-2 rounded-lg text-xs font-bold text-forest hover:bg-sage/40 transition-all flex items-center gap-2';
+      });
+      const e = document.getElementById('d' + t);
+      if (e) e.className = 'nav-btn px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 bg-forest text-cream shadow-sm';
+    }
+
+    function loadData() {
+      const e = localStorage.getItem(STORAGE_KEY);
+      if (e) {
+        try {
+          appData = JSON.parse(e);
+        } catch (t) {
+          console.error(t);
+          appData = defaultInitialData;
         }
+      } else {
+        saveData();
+      }
+    }
 
-        const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V3';
+    function saveData(reRender = true) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      if (reRender) renderAll();
+    }
 
-        function getTodayDateStr() {
-            const today = new Date();
-            return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    function getActiveCircle() {
+      if (!appData.circles || appData.circles.length === 0) return null;
+      return appData.circles.find(e => e.id === appData.activeCircleId) || appData.circles[0];
+    }
+
+    function renderAll() {
+      const e = getActiveCircle();
+      const t = document.getElementById('circle-selector');
+      t.innerHTML = '';
+
+      if (!e) {
+        t.innerHTML = '<option value="">لا توجد حلقات حالياً</option>';
+        document.getElementById('input-mosque').value = '';
+        document.getElementById('input-circle-name').value = '';
+        document.getElementById('input-teacher').value = '';
+        document.getElementById('student-count').innerText = '0';
+        renderStudentsTable();
+        renderExportTable();
+        renderLeaderboard();
+        return;
+      }
+
+      appData.circles.forEach(n => {
+        const option = document.createElement('option');
+        option.value = n.id;
+        option.selected = (n.id === appData.activeCircleId);
+        option.textContent = `${n.circleName} (${n.mosqueName})`;
+        t.appendChild(option);
+      });
+
+      document.getElementById('input-mosque').value = e.mosqueName || '';
+      document.getElementById('input-circle-name').value = e.circleName || '';
+      document.getElementById('input-teacher').value = e.teacherName || '';
+      
+      document.getElementById('card-display-mosque').textContent = e.mosqueName || '--';
+      document.getElementById('card-display-circle').textContent = e.circleName || '--';
+      document.getElementById('card-display-teacher').textContent = e.teacherName || '--';
+      
+      document.getElementById('student-count').innerText = e.students.length;
+
+      renderStudentsTable();
+      renderExportTable();
+      renderLeaderboard();
+      lucide.createIcons();
+    }
+
+    function changeActiveCircle(e) {
+      appData.activeCircleId = e;
+      saveData();
+    }
+
+    function createNewCirclePrompt() {
+      const e = prompt("أدخلي اسم الحلقة الجديدة:");
+      if (!e) return;
+      const t = prompt("أدخلي اسم الجامع:") || "";
+      const n = prompt("أدخلي اسم المشرفة/المعلمة:") || "";
+      const s = {
+        id: 'circle_' + Date.now(),
+        mosqueName: t.trim(),
+        circleName: e.trim(),
+        teacherName: n.trim(),
+        students: []
+      };
+      appData.circles.push(s);
+      appData.activeCircleId = s.id;
+      saveData();
+    }
+
+    function deleteActiveCircle() {
+      if (appData.circles && appData.circles.length !== 0 && confirm("هل أنتِ متأكدة من حذف هذه الحلقة بالكامل؟")) {
+        appData.circles = appData.circles.filter(e => e.id !== appData.activeCircleId);
+        appData.activeCircleId = appData.circles.length > 0 ? appData.circles[0].id : null;
+        saveData();
+      }
+    }
+
+    // تعديل لمنع فقدان الـ Focus أثناء الكتابة
+    function updateCircleDetails() {
+      const e = getActiveCircle();
+      if (!e) return;
+      
+      e.mosqueName = document.getElementById('input-mosque').value;
+      e.circleName = document.getElementById('input-circle-name').value;
+      e.teacherName = document.getElementById('input-teacher').value;
+      
+      document.getElementById('card-display-mosque').textContent = e.mosqueName || '--';
+      document.getElementById('card-display-circle').textContent = e.circleName || '--';
+      document.getElementById('card-display-teacher').textContent = e.teacherName || '--';
+      
+      // حفظ في الـ LocalStorage دون إعادة بناء عناصر الـ DOM الكاملة
+      saveData(false);
+    }
+
+    function addStudent(e) {
+      e.preventDefault();
+      const t = getActiveCircle();
+      if (!t) return alert("يرجى إضافة حلقة أولاً!");
+      const n = document.getElementById('input-student-name');
+      const s = n.value.trim();
+      if (!s) return;
+      t.students.push({ id: Date.now().toString(), name: s, history: [] });
+      n.value = '';
+      saveData();
+    }
+
+    function toggleAttendance(e) {
+      const t = getActiveCircle();
+      if (!t) return;
+      const n = t.students.find(s => s.id === e);
+      if (!n) return;
+      const s = getTodayDateStr();
+      const a = n.history.indexOf(s);
+      if (a > -1) {
+        n.history.splice(a, 1);
+      } else {
+        n.history.push(s);
+      }
+      saveData();
+    }
+
+    // حساب التتابع بناءً على آخر الجلسات المسجلة بدلاً من الأيام المتقاطعة
+    function getStreak(e) {
+      if (e.manualStreak !== undefined) return e.manualStreak;
+      if (!e.history || e.history.length === 0) return 0;
+
+      const sortedHistory = [...e.history].sort();
+      let streak = 0;
+
+      for (let i = sortedHistory.length - 1; i >= 0; i--) {
+        streak++;
+      }
+      return streak;
+    }
+
+    function editStudentStreak(e) {
+      const t = getActiveCircle();
+      if (!t) return;
+      const n = t.students.find(s => s.id === e);
+      if (!n) return;
+      const s = getStreak(n);
+      const a = prompt(`تعديل التتابع (عدد الأيام المتتابعة) للطالبة (${n.name}):`, s);
+      if (a !== null && !isNaN(parseInt(a))) {
+        n.manualStreak = Math.max(0, parseInt(a));
+        saveData();
+      }
+    }
+
+    function checkThreeConsecutiveAbsences(e) {
+      const t = new Date();
+      let n = 0;
+      for (let s = 0; s < 3; s++) {
+        const a = new Date(t);
+        a.setDate(a.getDate() - s);
+        const dateStr = `${a.getFullYear()}-${String(a.getMonth() + 1).padStart(2, '0')}-${String(a.getDate()).padStart(2, '0')}`;
+        if (!e.history.includes(dateStr)) {
+          n++;
         }
+      }
+      return n >= 3;
+    }
 
-        const todayDate = getTodayDateStr();
+    function renderHeartBadgeHTML(e, t = null) {
+      const n = Math.min(e, 3);
+      const s = t ? `onclick="editStudentStreak('${t}')"` : '';
+      return `<div class="heart-badge fill-${n}" ${s} title="تتابع: ${e} أيام (اضغطي للتعديل)">
+        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <span class="count-number">${e}</span>
+      </div>`;
+    }
 
-        // Default Data populated from the provided report image
-        const defaultInitialData = {
-            activeCircleId: 'circle_ghayth_quloob',
-            circles: [
-                {
-                    id: 'circle_ghayth_quloob',
-                    mosqueName: 'المحمدي',
-                    circleName: 'غيث القلوب',
-                    teacherName: 'الآنسة ريم مسلم',
-                    students: [
-                        { id: '1', name: 'لارا الشرع', history: [todayDate] },
-                        { id: '2', name: 'بتول مذيب', history: [todayDate] },
-                        { id: '3', name: 'رؤى جهماني', history: [todayDate] },
-                        { id: '4', name: 'رولا القداح', history: [todayDate] },
-                        { id: '5', name: 'حلا الجنادي', history: [todayDate] },
-                        { id: '6', name: 'آية الخطاب', history: [todayDate] },
-                        { id: '7', name: 'اماني عمارين', history: [todayDate] },
-                        { id: '8', name: 'صبا الجنادي', history: [todayDate] },
-                        { id: '9', name: 'صفا ابو السل', history: [todayDate] },
-                        { id: '10', name: 'ملاك الحلاوات', history: [todayDate] },
-                        { id: '11', name: 'تقى كعبور', history: [todayDate] },
-                        { id: '12', name: 'سندس الشرع', history: [todayDate] },
-                        { id: '13', name: 'تيماء المذيب', history: [todayDate] },
-                        { id: '14', name: 'سمية المفعلاني', history: [todayDate] },
-                        { id: '15', name: 'جنى العمارين', history: [todayDate] },
-                        { id: '16', name: 'آية الخطيب', history: [todayDate] },
-                        { id: '17', name: 'راما حسن', history: [todayDate] },
-                        { id: '18', name: 'ربا الجنادي', history: [todayDate] },
-                        { id: '19', name: 'ايناس ابو السل', history: [todayDate] },
-                        { id: '20', name: 'رغد الخلف', history: [todayDate] },
-                        { id: '21', name: 'ريان الرفاعي', history: [todayDate] },
-                        { id: '22', name: 'بتول المذيب', history: [todayDate] },
-                        { id: '23', name: 'ايناس المذيب', history: [] },
-                        { id: '24', name: 'مروة قراعزة', history: [] },
-                        { id: '25', name: 'منار طياسنة', history: [] },
-                        { id: '26', name: 'طالبة 29', history: [] },
-                        { id: '27', name: 'براءة عمارين', history: [] },
-                        { id: '28', name: 'ملاك ابو السل', history: [] },
-                        { id: '29', name: 'آية الشولي', history: [] },
-                        { id: '30', name: 'طالبة 30', history: [] }
-                    ]
-                }
-            ]
-        };
+    // استخدام DOM API الآمن لحماية التطبيق من XSS
+    function renderStudentsTable() {
+      const e = document.getElementById('student-tbody');
+      e.innerHTML = '';
+      const t = getActiveCircle();
 
-        let appData = defaultInitialData;
+      if (!t || t.students.length === 0) {
+        e.innerHTML = '<tr><td colspan="4" class="text-center py-5 text-slate">لا توجد طالبات في هذه الحلقة.</td></tr>';
+        updateCircleStats(0, 0, 0, 0);
+        return;
+      }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadData();
-            renderAll();
-            lucide.createIcons();
-        });
+      const n = getTodayDateStr();
+      const s = (document.getElementById('search-student-input')?.value || '').trim().toLowerCase();
+      const a = t.students.filter(st => st.name.toLowerCase().includes(s));
 
-        function enterApp() {
-            document.getElementById('splash-screen').classList.add('hidden');
+      let presentCount = 0;
+      let starCount = 0;
+
+      t.students.forEach(st => {
+        if (st.history.includes(n)) presentCount++;
+        if (getStreak(st) >= 3) starCount++;
+      });
+
+      const absentCount = t.students.length - presentCount;
+      const percent = Math.round((presentCount / t.students.length) * 100);
+      updateCircleStats(percent, presentCount, absentCount, starCount);
+
+      if (a.length === 0) {
+        e.innerHTML = '<tr><td colspan="4" class="text-center py-5 text-slate">لا توجد نتائج.</td></tr>';
+        return;
+      }
+
+      a.forEach(st => {
+        const isPresent = st.history.includes(n);
+        const streak = getStreak(st);
+        const isAbsent3 = checkThreeConsecutiveAbsences(st);
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-sage/10 transition border-b border-olive/10";
+
+        // الاسم
+        const tdName = document.createElement('td');
+        tdName.className = "p-2.5 font-bold text-forest whitespace-nowrap border-l border-olive/20";
+        const spanContainer = document.createElement('span');
+        spanContainer.className = "inline-flex items-center gap-1";
+        spanContainer.textContent = st.name;
+        
+        if (isAbsent3) {
+          const warnSpan = document.createElement('span');
+          warnSpan.title = "غائبة 3 أيام متتالية";
+          warnSpan.className = "text-red-500 font-bold";
+          warnSpan.textContent = "⚠️";
+          spanContainer.appendChild(warnSpan);
         }
+        tdName.appendChild(spanContainer);
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(tabId).classList.remove('hidden');
+        // زر الحضور
+        const tdAttendance = document.createElement('td');
+        tdAttendance.className = "p-2.5 text-center border-l border-olive/20";
+        const btnAttendance = document.createElement('button');
+        btnAttendance.onclick = () => toggleAttendance(st.id);
+        btnAttendance.className = `px-3 py-1 rounded-lg text-xs font-bold transition ${isPresent ? 'bg-forest text-cream' : 'bg-sage/40 text-forest border border-olive/30'}`;
+        btnAttendance.textContent = isPresent ? '✓ حاضر' : 'غائب';
+        tdAttendance.appendChild(btnAttendance);
 
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.className = 'nav-btn px-4 py-2 rounded-lg text-xs font-bold text-forest hover:bg-sage/40 transition-all flex items-center gap-2';
-            });
+        // التتابع
+        const tdStreak = document.createElement('td');
+        tdStreak.className = "p-2.5 text-center border-l border-olive/20";
+        tdStreak.innerHTML = renderHeartBadgeHTML(streak, st.id);
 
-            const activeBtn = document.getElementById('d' + tabId);
-            if (activeBtn) {
-                activeBtn.className = 'nav-btn px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 bg-forest text-cream shadow-sm';
-            }
-        }
+        // الإجراءات
+        const tdActions = document.createElement('td');
+        tdActions.className = "p-2.5 text-center";
+        const btnDelete = document.createElement('button');
+        btnDelete.onclick = () => deleteStudent(st.id);
+        btnDelete.className = "text-red-400 hover:text-red-600 p-1";
+        btnDelete.innerHTML = '<i data-lucide="trash-2" class="w-3.5 h-3.5"></i>';
+        tdActions.appendChild(btnDelete);
 
-        function loadData() {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) {
-                try { 
-                    appData = JSON.parse(saved); 
-                } catch (e) { 
-                    console.error(e);
-                    appData = defaultInitialData;
-                }
-            } else {
-                saveData();
-            }
-        }
+        tr.appendChild(tdName);
+        tr.appendChild(tdAttendance);
+        tr.appendChild(tdStreak);
+        tr.appendChild(tdActions);
 
-        function saveData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-            renderAll();
-        }
+        e.appendChild(tr);
+      });
 
-        function getActiveCircle() {
-            if (!appData.circles || appData.circles.length === 0) return null;
-            return appData.circles.find(c => c.id === appData.activeCircleId) || appData.circles[0];
-        }
+      lucide.createIcons();
+    }
 
-        function renderAll() {
-            const circle = getActiveCircle();
-            const selector = document.getElementById('circle-selector');
-            selector.innerHTML = '';
+    function updateCircleStats(e, t, n, s) {
+      document.getElementById('circle-percent-text').innerText = e + '%';
+      document.getElementById('circle-progress').setAttribute('stroke-dasharray', `${e}, 100`);
+      document.getElementById('stat-present').innerText = t;
+      document.getElementById('stat-absent').innerText = n;
+      document.getElementById('stat-stars').innerText = s;
+      document.getElementById('card-percent-display').innerText = e + '%';
+      document.getElementById('card-present-count').innerText = t;
+      document.getElementById('card-absent-count').innerText = n;
+      document.getElementById('card-stars-count').innerText = s;
+    }
 
-            if (!circle) {
-                selector.innerHTML = `<option value="">لا توجد حلقات حالياً</option>`;
-                document.getElementById('input-mosque').value = '';
-                document.getElementById('input-circle-name').value = '';
-                document.getElementById('input-teacher').value = '';
-                document.getElementById('student-count').innerText = '0';
-                renderStudentsTable();
-                renderExportTable();
-                renderLeaderboard();
-                return;
-            }
+    function deleteStudent(e) {
+      const t = getActiveCircle();
+      if (t && confirm("حذف الطالبة؟")) {
+        t.students = t.students.filter(st => st.id !== e);
+        saveData();
+      }
+    }
 
-            appData.circles.forEach(c => {
-                selector.innerHTML += `<option value="${c.id}" ${c.id === appData.activeCircleId ? 'selected' : ''}>${c.circleName} (${c.mosqueName})</option>`;
-            });
+    function renderExportTable() {
+      const e = document.getElementById('export-table-tbody');
+      e.innerHTML = '';
+      const t = getActiveCircle();
+      if (!t) return;
+      const n = getTodayDateStr();
+      document.getElementById('card-export-date').innerText = n;
 
-            document.getElementById('input-mosque').value = circle.mosqueName || '';
-            document.getElementById('input-circle-name').value = circle.circleName || '';
-            document.getElementById('input-teacher').value = circle.teacherName || '';
+      [...t.students].sort((a, b) => a.name.localeCompare(b.name, 'ar')).forEach((st, index) => {
+        const isPresent = st.history.includes(n);
+        const streak = getStreak(st);
 
-            document.getElementById('card-display-mosque').innerText = circle.mosqueName || '--';
-            document.getElementById('card-display-circle').innerText = circle.circleName || '--';
-            document.getElementById('card-display-teacher').innerText = circle.teacherName || '--';
-            document.getElementById('student-count').innerText = circle.students.length;
+        const tr = document.createElement('tr');
+        tr.style.cssText = `border-bottom:1px solid #E2DCD0; background-color:${index % 2 === 0 ? '#FFF' : '#FCF7EC'};`;
 
-            renderStudentsTable();
-            renderExportTable();
-            renderLeaderboard();
-            lucide.createIcons();
-        }
+        const tdName = document.createElement('td');
+        tdName.style.cssText = "padding:3px 8px; font-weight:bold; color:#2C3E35; border-left:1px solid #E2DCD0; line-height:1.2;";
+        tdName.textContent = st.name;
 
-        function changeActiveCircle(circleId) {
-            appData.activeCircleId = circleId;
-            saveData();
-        }
+        const tdAtt = document.createElement('td');
+        tdAtt.style.cssText = `padding:3px 8px; text-align:center; color:${isPresent ? '#047857' : '#B91C1C'}; font-weight:bold; border-left:1px solid #E2DCD0; line-height:1.2;`;
+        tdAtt.textContent = isPresent ? '✓ حاضرة' : 'غائبة';
 
-        function createNewCirclePrompt() {
-            const name = prompt("أدخلي اسم الحلقة الجديدة:");
-            if (!name) return;
-            const mosque = prompt("أدخلي اسم الجامع:") || "";
-            const teacher = prompt("أدخلي اسم المشرفة/المعلمة:") || "";
+        const tdStreak = document.createElement('td');
+        tdStreak.style.cssText = "padding:3px 8px; text-align:center; border-left:1px solid #E2DCD0; line-height:1.2;";
+        tdStreak.innerHTML = renderHeartBadgeHTML(streak);
 
-            const newCircle = {
-                id: 'circle_' + Date.now(),
-                mosqueName: mosque.trim(),
-                circleName: name.trim(),
-                teacherName: teacher.trim(),
-                students: []
-            };
-            appData.circles.push(newCircle);
-            appData.activeCircleId = newCircle.id;
-            saveData();
-        }
+        const tdTotal = document.createElement('td');
+        tdTotal.style.cssText = "padding:3px 8px; text-align:center; font-weight:bold; color:#2C3E35; line-height:1.2;";
+        tdTotal.textContent = st.history.length;
 
-        function deleteActiveCircle() {
-            if (!appData.circles || appData.circles.length === 0) return;
-            if (confirm("هل أنتِ متأكدة من حذف هذه الحلقة بالكامل؟")) {
-                appData.circles = appData.circles.filter(c => c.id !== appData.activeCircleId);
-                appData.activeCircleId = appData.circles.length > 0 ? appData.circles[0].id : null;
-                saveData();
-            }
-        }
+        tr.appendChild(tdName);
+        tr.appendChild(tdAtt);
+        tr.appendChild(tdStreak);
+        tr.appendChild(tdTotal);
 
-        function updateCircleDetails() {
-            const circle = getActiveCircle();
-            if (!circle) return;
-            circle.mosqueName = document.getElementById('input-mosque').value;
-            circle.circleName = document.getElementById('input-circle-name').value;
-            circle.teacherName = document.getElementById('input-teacher').value;
-            saveData();
-        }
+        e.appendChild(tr);
+      });
+    }
 
-        function addStudent(e) {
-            e.preventDefault();
-            const circle = getActiveCircle();
-            if (!circle) {
-                alert("يرجى إضافة حلقة أولاً!");
-                return;
-            }
+    function renderLeaderboard() {
+      const e = document.getElementById('top-students-grid');
+      e.innerHTML = '';
+      const t = getActiveCircle();
+      if (!t) return;
 
-            const input = document.getElementById('input-student-name');
-            const name = input.value.trim();
-            if (!name) return;
+      const n = t.students.filter(st => getStreak(st) >= 3);
+      if (n.length === 0) {
+        e.innerHTML = '<div class="col-span-full text-center py-6 text-slate text-xs">تظهر هنا الطالبات المتميزات فور وصولهن لـ 3 أيام متتابعة 🌟</div>';
+        return;
+      }
 
-            circle.students.push({ id: Date.now().toString(), name: name, history: [] });
-            input.value = '';
-            saveData();
-        }
+      n.forEach(st => {
+        const card = document.createElement('div');
+        card.className = "glass-panel p-4 rounded-2xl flex items-center justify-between border-2 border-amber-200";
 
-        function toggleAttendance(studentId) {
-            const circle = getActiveCircle();
-            if (!circle) return;
-            const student = circle.students.find(s => s.id === studentId);
-            if (!student) return;
+        const leftDiv = document.createElement('div');
+        leftDiv.className = "flex items-center gap-2";
+        leftDiv.innerHTML = '<i data-lucide="award" class="w-6 h-6 text-amber-500"></i>';
 
-            const today = getTodayDateStr();
-            const index = student.history.indexOf(today);
-            if (index > -1) student.history.splice(index, 1);
-            else student.history.push(today);
+        const nameSpan = document.createElement('span');
+        nameSpan.className = "font-bold text-sm text-forest";
+        nameSpan.textContent = st.name;
+        leftDiv.appendChild(nameSpan);
 
-            saveData();
-        }
+        const badgeSpan = document.createElement('span');
+        badgeSpan.className = "text-xs bg-amber-100 text-amber-800 font-bold px-2.5 py-1 rounded-full";
+        badgeSpan.textContent = `متميزة ⭐ (${getStreak(st)} أيام)`;
 
-        function getStreak(student) {
-            let streak = 0;
-            const today = new Date();
-            for (let i = 0; i < 30; i++) {
-                const d = new Date(today);
-                d.setDate(d.getDate() - i);
-                const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-                if (student.history.includes(dateStr)) {
-                    streak++;
-                } else if (i > 0) {
-                    break;
-                }
-            }
-            return streak;
-        }
+        card.appendChild(leftDiv);
+        card.appendChild(badgeSpan);
 
-        function checkThreeConsecutiveAbsences(student) {
-            const today = new Date();
-            let absentStreak = 0;
-            for (let i = 0; i < 3; i++) {
-                const d = new Date(today);
-                d.setDate(d.getDate() - i);
-                const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-                if (!student.history.includes(dateStr)) {
-                    absentStreak++;
-                }
-            }
-            return absentStreak >= 3;
-        }
+        e.appendChild(card);
+      });
 
-        function renderHeartBadgeHTML(streakCount) {
-            const fillLevel = Math.min(streakCount, 3);
-            return `
-                <div class="heart-badge fill-${fillLevel}" title="تتابع: ${streakCount} أيام">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                    <span class="count-number">${streakCount}</span>
-                </div>
-            `;
-        }
+      lucide.createIcons();
+    }
 
-        function renderStudentsTable() {
-            const tbody = document.getElementById('student-tbody');
-            tbody.innerHTML = '';
-            const circle = getActiveCircle();
+    function exportAttendanceCard() {
+      const e = getActiveCircle();
+      if (!e) return alert("لا توجد بيانات للتصدير");
+      renderExportTable();
+      const t = document.getElementById('export-card-target');
+      html2canvas(t, { scale: 2, backgroundColor: '#FCF7EC', useCORS: true }).then(canvas => {
+        const n = document.createElement('a');
+        n.download = `تقرير_${e.circleName}_${getTodayDateStr()}.png`;
+        n.href = canvas.toDataURL('image/png');
+        n.click();
+      }).catch(err => {
+        console.error('Error generating image:', err);
+        alert('حدث خطأ أثناء تصدير الصورة.');
+      });
+    }
 
-            if (!circle || circle.students.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-5 text-slate">لا توجد طالبات في هذه الحلقة.</td></tr>`;
-                updateCircleStats(0, 0, 0, 0);
-                return;
-            }
-
-            const today = getTodayDateStr();
-            const searchQuery = (document.getElementById('search-student-input')?.value || '').trim().toLowerCase();
-            const filtered = circle.students.filter(s => s.name.toLowerCase().includes(searchQuery));
-
-            let presentCount = 0;
-            let starsCount = 0;
-
-            circle.students.forEach(s => {
-                if (s.history.includes(today)) presentCount++;
-                if (getStreak(s) >= 3) starsCount++;
-            });
-
-            const absentCount = circle.students.length - presentCount;
-            const percent = Math.round((presentCount / circle.students.length) * 100);
-
-            updateCircleStats(percent, presentCount, absentCount, starsCount);
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-5 text-slate">لا توجد نتائج.</td></tr>`;
-                return;
-            }
-
-            filtered.forEach(student => {
-                const isPresent = student.history.includes(today);
-                const streak = getStreak(student);
-                const isWarning = checkThreeConsecutiveAbsences(student);
-
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-sage/10 transition border-b border-olive/10";
-                tr.innerHTML = `
-                    <td class="p-2.5 font-bold text-forest whitespace-nowrap border-l border-olive/20">
-                        <span class="inline-flex items-center gap-1">
-                            ${student.name}
-                            ${isWarning ? '<span title="غائبة 3 أيام متتالية" class="text-red-500 font-bold">⚠️</span>' : ''}
-                        </span>
-                    </td>
-                    <td class="p-2.5 text-center border-l border-olive/20">
-                        <button onclick="toggleAttendance('${student.id}')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${isPresent ? 'bg-forest text-cream' : 'bg-sage/40 text-forest border border-olive/30'}">
-                            ${isPresent ? '✓ حاضر' : 'غائب'}
-                        </button>
-                    </td>
-                    <td class="p-2.5 text-center border-l border-olive/20">
-                        ${renderHeartBadgeHTML(streak)}
-                    </td>
-                    <td class="p-2.5 text-center">
-                        <button onclick="deleteStudent('${student.id}')" class="text-red-400 hover:text-red-600 p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function updateCircleStats(percent, present, absent, stars) {
-            document.getElementById('circle-percent-text').innerText = percent + '%';
-            document.getElementById('circle-progress').setAttribute('stroke-dasharray', `${percent}, 100`);
-            
-            document.getElementById('stat-present').innerText = present;
-            document.getElementById('stat-absent').innerText = absent;
-            document.getElementById('stat-stars').innerText = stars;
-
-            // Update exported card stats
-            document.getElementById('card-percent-display').innerText = percent + '%';
-            document.getElementById('card-present-count').innerText = present;
-            document.getElementById('card-absent-count').innerText = absent;
-            document.getElementById('card-stars-count').innerText = stars;
-        }
-
-        function deleteStudent(id) {
-            const circle = getActiveCircle();
-            if (!circle) return;
-            if (confirm("حذف الطالبة؟")) {
-                circle.students = circle.students.filter(s => s.id !== id);
-                saveData();
-            }
-        }
-
-        function renderExportTable() {
-            const tbody = document.getElementById('export-table-tbody');
-            tbody.innerHTML = '';
-            const circle = getActiveCircle();
-            if (!circle) return;
-
-            const today = getTodayDateStr();
-            document.getElementById('card-export-date').innerText = today;
-
-            circle.students.forEach((s, idx) => {
-                const isPresent = s.history.includes(today);
-                const streak = getStreak(s);
-                tbody.innerHTML += `
-                    <tr style="border-bottom: 1px solid #E2DCD0; background-color: ${idx % 2 === 0 ? '#FFF' : '#FCF7EC'};">
-                        <td style="padding: 10px 14px; font-weight: bold; color: #2C3E35; border-left: 1px solid #E2DCD0;">${s.name}</td>
-                        <td style="padding: 10px 14px; text-align: center; color: ${isPresent ? '#047857' : '#B91C1C'}; font-weight: bold; border-left: 1px solid #E2DCD0;">${isPresent ? '✓ حاضرة' : 'غائبة'}</td>
-                        <td style="padding: 10px 14px; text-align: center; border-left: 1px solid #E2DCD0;">${renderHeartBadgeHTML(streak)}</td>
-                        <td style="padding: 10px 14px; text-align: center; font-weight: bold; color: #2C3E35;">${s.history.length}</td>
-                    </tr>
-                `;
-            });
-        }
-
-        function renderLeaderboard() {
-            const grid = document.getElementById('top-students-grid');
-            grid.innerHTML = '';
-            const circle = getActiveCircle();
-
-            if (!circle) return;
-
-            const topStudents = circle.students.filter(s => getStreak(s) >= 3);
-
-            if (topStudents.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center py-6 text-slate text-xs">تظهر هنا الطالبات المتميزات فور وصولهن لـ 3 أيام متتابعة 🌟</div>';
-                return;
-            }
-
-            topStudents.forEach(s => {
-                grid.innerHTML += `
-                    <div class="glass-panel p-4 rounded-2xl flex items-center justify-between border-2 border-amber-200">
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
-                            <span class="font-bold text-sm text-forest">${s.name}</span>
-                        </div>
-                        <span class="text-xs bg-amber-100 text-amber-800 font-bold px-2.5 py-1 rounded-full">متميزة ⭐ (${getStreak(s)} أيام)</span>
-                    </div>
-                `;
-            });
-        }
-
-        function exportAttendanceCard() {
-            const circle = getActiveCircle();
-            if (!circle) {
-                alert("لا توجد بيانات للتصدير");
-                return;
-            }
-
-            renderExportTable();
-
-            const target = document.getElementById('export-card-target');
-            
-            html2canvas(target, {
-                scale: 2,
-                backgroundColor: '#FCF7EC',
-                useCORS: true
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `تقرير_${circle.circleName}_${getTodayDateStr()}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            }).catch(err => {
-                console.error('Error generating image:', err);
-                alert('حدث خطأ أثناء تصدير الصورة.');
-            });
-        }
-
-        function installPWA() {
-            alert("لتثبيت التطبيق: افتحي خيارات المتصفح واختاري 'الإضافة إلى الشاشة الرئيسية'");
-        }
-    </script>
+    function installPWA() {
+      alert("لتثبيت التطبيق: افتحي خيارات المتصفح واختاري 'الإضافة إلى الشاشة الرئيسية'");
+    }
+  </script>
 </body>
 </html>
