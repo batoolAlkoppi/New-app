@@ -253,7 +253,7 @@
         <div id="export-card-target" style="width:650px; background-color:#FCF7EC; padding:20px 24px; border-radius:16px; font-family:'Cairo',sans-serif; color:#2C3E35; border:3px double #AFC2AE; box-sizing:border-box; position:relative;">
           
           <!-- الهيدر والزخرفة مع الشعار -->
-          <div style="display:flex; justify-content:space-between; items-center; margin-bottom:12px; padding-bottom:10px; border-bottom:2px solid #AFC2AE;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:10px; border-bottom:2px solid #AFC2AE;">
             <div style="display:flex; align-items:center; gap:10px;">
               <div style="width:42px; height:42px; background-color:#D5E4CF; border-radius:10px; display:flex; align-items:center; justify-content:center; border:1px solid #AFC2AE;">
                 <!-- شعار المسجد/هِمّة -->
@@ -309,10 +309,10 @@
             <tbody id="export-table-tbody"></tbody>
           </table>
 
-          <!-- الفوتر وبصمة الحقوق بخط مائل إنجليزي -->
-          <div style="margin-top:12px; pt-8px; border-top:1px solid #AFC2AE; display:flex; justify-space-between; align-items:center;">
-            <div style="font-size:10px; font-weight:bold; color:#78867B;">نظام هِمّة إدارة حلقات القرآن الكريم</div>
-            <div class="font-cursive" style="font-size:16px; font-weight:700; color:#2C3E35; letter-spacing:0.5px;">Developed by Batool</div>
+          <!-- الفوتر وبصمة الحقوق بخط مائل إنجليزي محاذى لليسار بشكل دقيق -->
+          <div style="margin-top:12px; padding-top:8px; border-top:1px solid #AFC2AE; display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:10px; font-weight:bold; color:#78867B;">نظام هِمّة لإدارة حلقات القرآن الكريم</div>
+            <div class="font-cursive" style="font-size:17px; font-weight:700; color:#2C3E35; direction:ltr; text-align:left;">Developed by Batool</div>
           </div>
         </div>
       </div>
@@ -772,16 +772,24 @@
       lucide.createIcons();
     }
 
+    // دالة تصدير الصورة السريعة والمحسنة
     function exportAttendanceCard() {
       const e = getActiveCircle();
       if (!e) return alert("لا توجد بيانات للتصدير");
+      
       renderExportTable();
-      const t = document.getElementById('export-card-target');
-      html2canvas(t, { scale: 2, backgroundColor: '#FCF7EC', useCORS: true }).then(canvas => {
-        const n = document.createElement('a');
-        n.download = `تقرير_${e.circleName}_${getTodayDateStr()}.png`;
-        n.href = canvas.toDataURL('image/png');
-        n.click();
+      const target = document.getElementById('export-card-target');
+
+      html2canvas(target, {
+        scale: 2,
+        backgroundColor: '#FCF7EC',
+        useCORS: true,
+        logging: false
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `تقرير_${e.circleName}_${getTodayDateStr()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
       }).catch(err => {
         console.error('Error generating image:', err);
         alert('حدث خطأ أثناء تصدير الصورة.');
