@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="h-full">
 <head>
@@ -52,38 +53,49 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(175, 194, 174, 0.4);
     }
+    
+    /* ضبط أبعاد ومحاذاة شارة القلب بشكل دقيق جِداً */
     .heart-badge {
       position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       transition: all 0.2s ease;
       margin: 0 auto;
       cursor: pointer;
     }
-    .heart-badge svg { width: 100%; height: 100%; display: block; }
+    .heart-badge svg { 
+      width: 100%; 
+      height: 100%; 
+      display: block; 
+    }
     
-    /* ضبط محاذاة الرقم بالضبط في منتصف القلب */
+    /* التموسط التام للرقم في السنتر تماماً */
     .heart-badge .count-number {
       position: absolute;
-      font-size: 10px;
-      font-weight: 800;
-      color: #fff;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -55%);
+      transform: translate(-50%, -45%);
+      font-size: 11px;
+      font-weight: 800;
       line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      text-align: center;
+      pointer-events: none;
     }
+
     .heart-badge.fill-0 svg { color: #cbd5e1; fill: #cbd5e1; }
     .heart-badge.fill-0 .count-number { color: #475569; }
+
     .heart-badge.fill-1 svg { color: #fca5a5; fill: #fca5a5; }
+    .heart-badge.fill-1 .count-number { color: #7f1d1d; }
+
     .heart-badge.fill-2 svg { color: #ef4444; fill: #ef4444; }
-    .heart-badge.fill-3 svg { color: #b91c1c; fill: #b91c1c; transform: scale(1.05); }
+    .heart-badge.fill-2 .count-number { color: #ffffff; }
+
+    .heart-badge.fill-3 svg { color: #b91c1c; fill: #b91c1c; }
+    .heart-badge.fill-3 .count-number { color: #ffffff; }
 
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: #FCF7EC; }
@@ -248,7 +260,7 @@
         </div>
       </div>
 
-      <!-- Hidden Export Target Template (بطاقة تصدير الصورة بتصميم مزخرف ومحدد الأبعاد) -->
+      <!-- Hidden Export Target Template -->
       <div class="overflow-hidden h-0 w-0 pointer-events-none">
         <div id="export-card-target" style="width:650px; background-color:#FCF7EC; padding:20px 24px; border-radius:16px; font-family:'Cairo',sans-serif; color:#2C3E35; border:3px double #AFC2AE; box-sizing:border-box; position:relative;">
           
@@ -256,7 +268,6 @@
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:10px; border-bottom:2px solid #AFC2AE;">
             <div style="display:flex; align-items:center; gap:10px;">
               <div style="width:42px; height:42px; background-color:#D5E4CF; border-radius:10px; display:flex; align-items:center; justify-content:center; border:1px solid #AFC2AE;">
-                <!-- شعار المسجد/هِمّة -->
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2C3E35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 2L10 5H14L12 2Z"></path>
                   <path d="M12 5V8"></path>
@@ -309,7 +320,7 @@
             <tbody id="export-table-tbody"></tbody>
           </table>
 
-          <!-- الفوتر وبصمة الحقوق بخط مائل إنجليزي محاذى لليسار بشكل دقيق -->
+          <!-- الفوتر بخط مائل أنيق ومحاذاة يسارية -->
           <div style="margin-top:12px; padding-top:8px; border-top:1px solid #AFC2AE; display:flex; justify-content:space-between; align-items:center;">
             <div style="font-size:10px; font-weight:bold; color:#78867B;">نظام هِمّة لإدارة حلقات القرآن الكريم</div>
             <div class="font-cursive" style="font-size:17px; font-weight:700; color:#2C3E35; direction:ltr; text-align:left;">Developed by Batool</div>
@@ -579,11 +590,14 @@
       return n >= 3;
     }
 
+    /* دالة رسم القلب المعدلة والمضبوطة بالكامل */
     function renderHeartBadgeHTML(e, t = null) {
       const n = Math.min(e, 3);
       const s = t ? `onclick="editStudentStreak('${t}')"` : '';
       return `<div class="heart-badge fill-${n}" ${s} title="تتابع: ${e} أيام (اضغطي للتعديل)">
-        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
         <span class="count-number">${e}</span>
       </div>`;
     }
@@ -772,7 +786,6 @@
       lucide.createIcons();
     }
 
-    // دالة تصدير الصورة السريعة والمحسنة
     function exportAttendanceCard() {
       const e = getActiveCircle();
       if (!e) return alert("لا توجد بيانات للتصدير");
