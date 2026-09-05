@@ -50,38 +50,33 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             transition: all 0.3s ease;
             margin: 0 auto;
             cursor: pointer;
         }
         .heart-badge:hover { transform: translateY(-2px); }
-        .heart-badge svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
+        .heart-badge svg { width: 100%; height: 100%; display: block; }
         .heart-badge .count-number {
             position: absolute;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
             color: #ffffff;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -52%); /* توسيط بصري دقيق 100% للصفر والواحد والبقية */
+            transform: translate(-50%, -52%);
             line-height: 1;
             pointer-events: none;
         }
 
-        /* درجات الألوان للقلوب (تدريج وتغميق متسق بدون تكبير الحجم) */
         .heart-badge.fill-0 svg { color: #cbd5e1; fill: #cbd5e1; }
         .heart-badge.fill-0 .count-number { color: #475569; }
         .heart-badge.fill-1 svg { color: #f87171; fill: #f87171; } 
         .heart-badge.fill-2 svg { color: #ef4444; fill: #ef4444; } 
-        .heart-badge.fill-3 svg { color: #dc2626; fill: #dc2626; } /* أحمر غامق */
-        .heart-badge.fill-4 svg { color: #991b1b; fill: #991b1b; } /* أغمق درجة */
-        .heart-badge.fill-5 svg { color: #581c87; fill: #581c87; } /* عنابي داكن جداً */
+        .heart-badge.fill-3 svg { color: #dc2626; fill: #dc2626; } 
+        .heart-badge.fill-4 svg { color: #991b1b; fill: #991b1b; } 
+        .heart-badge.fill-5 svg { color: #581c87; fill: #581c87; } 
 
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: #FCF7EC; }
@@ -100,149 +95,152 @@
     <header class="sticky top-0 z-30 glass-panel border-b border-olive/30 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-sage/50 rounded-xl flex items-center justify-center border border-olive/30 overflow-hidden">
+                <div class="w-9 h-9 bg-sage/50 rounded-xl flex items-center justify-center border border-olive/30 overflow-hidden">
                     <img src="icon.png" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/40?text=هـ'">
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold text-forest leading-none">هِمّة</h1>
-                    <span class="text-xs text-slate font-medium">إدارة الحلقات</span>
+                    <h1 class="text-lg font-bold text-forest leading-none">هِمّة</h1>
+                    <span class="text-[11px] text-slate font-medium">إدارة الحلقات</span>
                 </div>
+            </div>
+            
+            <!-- PWA INSTALL BUTTON (TOP) -->
+            <div id="pwa-install-container" class="hidden">
+                <button id="pwa-install-btn" class="bg-forest text-cream px-3.5 py-1.5 rounded-xl text-xs font-bold hover:bg-forest/90 transition flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i> تثبيت التطبيق
+                </button>
             </div>
         </div>
     </header>
 
     <!-- MAIN CONTAINER -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-grow w-full">
 
-        <!-- SELECTOR BAR -->
-        <div class="glass-panel p-4 rounded-2xl mb-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-2 border-olive/40 shadow-sm">
-            <div class="flex items-center gap-3 w-full sm:w-auto">
-                <i data-lucide="layers" class="w-5 h-5 text-forest shrink-0"></i>
-                <select id="circle-selector" onchange="changeActiveCircle(this.value)" class="w-full sm:w-64 bg-cream border border-olive/50 rounded-xl px-3 py-2 text-sm font-bold text-forest focus:outline-none focus:ring-2 focus:ring-olive">
+        <!-- SELECTOR BAR & MINI INPUTS -->
+        <div class="glass-panel p-3 rounded-2xl mb-4 flex flex-col md:flex-row items-center justify-between gap-3 border border-olive/40 shadow-sm">
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <select id="circle-selector" onchange="changeActiveCircle(this.value)" class="w-full md:w-48 bg-cream border border-olive/40 rounded-lg px-2.5 py-1.5 text-xs font-bold text-forest focus:outline-none focus:ring-1 focus:ring-olive">
                 </select>
-            </div>
-            <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-                <button onclick="createNewCirclePrompt()" class="bg-forest text-cream px-4 py-2 rounded-xl text-xs font-bold hover:bg-forest/90 transition flex items-center gap-1 shadow-sm">
-                    <i data-lucide="plus" class="w-4 h-4"></i> حلقة جديدة
+                <button onclick="createNewCirclePrompt()" class="bg-forest text-cream px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-forest/90 transition flex items-center gap-1 shrink-0">
+                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> جديدة
                 </button>
+            </div>
+
+            <!-- COMPACT INPUTS ROW -->
+            <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
+                <input type="text" id="input-mosque" placeholder="المسجد" oninput="updateCircleDetails()" class="w-28 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                <input type="text" id="input-circle-name" placeholder="اسم الحلقة" oninput="updateCircleDetails()" class="w-32 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                <input type="text" id="input-teacher" placeholder="المعلمة" oninput="updateCircleDetails()" class="w-28 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
             </div>
         </div>
 
-        <!-- DETAILS INPUTS & STATS WIDGET -->
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
-            <div class="lg:col-span-3 glass-panel p-4 rounded-2xl shadow-sm border border-olive/20 flex flex-col justify-center gap-3">
-                <label class="block text-xs font-bold text-forest/80 uppercase">بيانات الحلقة</label>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <input type="text" id="input-mosque" placeholder="اسم المسجد" oninput="updateCircleDetails()" class="w-full bg-cream border border-olive/40 rounded-xl px-3 py-2 text-sm text-forest focus:outline-none focus:ring-2 focus:ring-olive">
-                    <input type="text" id="input-circle-name" placeholder="اسم الحلقة" oninput="updateCircleDetails()" class="w-full bg-cream border border-olive/40 rounded-xl px-3 py-2 text-sm text-forest focus:outline-none focus:ring-2 focus:ring-olive">
-                    <input type="text" id="input-teacher" placeholder="اسم المعلمة" oninput="updateCircleDetails()" class="w-full bg-cream border border-olive/40 rounded-xl px-3 py-2 text-sm text-forest focus:outline-none focus:ring-2 focus:ring-olive">
+        <!-- ATTENDANCE CIRCLE & STATS WIDGET -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+            <!-- ATTENDANCE CIRCLE CARD -->
+            <div class="glass-panel p-4 rounded-2xl shadow-sm border border-olive/20 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <!-- CIRCLE CHART -->
+                    <div class="relative w-14 h-14 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                            <path class="text-olive/30" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path id="attendance-circle-bar" class="text-forest transition-all duration-500" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <span id="attendance-percent-display" class="absolute text-xs font-black text-forest">0%</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs font-bold text-slate">نسبة الحضور</span>
+                        <div class="flex items-center gap-1 mt-0.5 text-[10px] text-slate font-semibold">
+                            <i data-lucide="trending-up" class="w-3 h-3 text-emerald-600"></i> خط حيومي
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- ATTENDANCE PERCENTAGE CARD -->
-            <div class="glass-panel p-4 rounded-2xl shadow-sm border border-olive/20 flex items-center justify-around text-center">
-                <div>
-                    <span class="block text-xs font-bold text-slate mb-1">نسبة الحضور اليوم</span>
-                    <span id="attendance-percent-display" class="text-3xl font-extrabold text-forest">0%</span>
-                </div>
-                <div class="border-r border-olive/30 pr-4 text-right text-xs space-y-1 font-bold">
+                <div class="text-left text-xs space-y-0.5 font-bold pl-2 border-r border-olive/20">
                     <div class="text-emerald-700">حاضرات: <span id="stat-present">0</span></div>
                     <div class="text-red-600">غائبات: <span id="stat-absent">0</span></div>
                 </div>
             </div>
+
+            <!-- QUICK ADD STUDENT -->
+            <div class="md:col-span-2 glass-panel p-4 rounded-2xl shadow-sm border border-olive/20 flex items-center">
+                <form onsubmit="addStudent(event)" class="flex gap-2 w-full">
+                    <input type="text" id="input-student-name" placeholder="أدخلي اسم الطالبة الجديدة..." required class="flex-grow bg-cream border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                    <button type="submit" class="bg-forest text-cream font-bold px-4 py-1.5 rounded-xl hover:bg-forest/90 transition text-xs shadow-sm shrink-0">
+                        إضافة طالبة
+                    </button>
+                    <button type="button" onclick="exportAttendanceCard()" class="bg-forest hover:bg-forest/90 text-cream font-bold px-3.5 py-1.5 rounded-xl transition text-xs flex items-center gap-1.5 shadow-md shrink-0">
+                        <i data-lucide="image" class="w-3.5 h-3.5"></i> حفظ A4
+                    </button>
+                </form>
+            </div>
         </div>
 
-        <section id="tab-attendance" class="space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- ADD STUDENT -->
-                <div class="lg:col-span-1 space-y-4">
-                    <div class="glass-panel p-5 rounded-2xl shadow-sm border border-olive/30">
-                        <label class="block text-sm font-bold text-forest mb-3">إضافة طالبة جديدة</label>
-                        <form onsubmit="addStudent(event)" class="flex gap-2 mb-4">
-                            <input type="text" id="input-student-name" placeholder="اسم الطالبة..." required class="flex-grow bg-cream border border-olive/40 rounded-xl px-3 py-2 text-sm text-forest focus:outline-none focus:ring-2 focus:ring-olive">
-                            <button type="submit" class="bg-forest text-cream font-bold px-4 py-2 rounded-xl hover:bg-forest/90 transition shadow-sm shrink-0">
-                                إضافة
-                            </button>
-                        </form>
-                        <div class="pt-4 border-t border-olive/20 flex justify-between items-center">
-                            <span class="text-sm font-bold text-slate">العدد الكلي: <span id="student-count" class="text-forest text-lg">0</span></span>
-                            <button onclick="exportAttendanceCard()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-xl transition text-xs flex items-center gap-2 shadow-md">
-                                <i data-lucide="image" class="w-4 h-4"></i> حفظ كصورة A4
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TABLE -->
-                <div class="lg:col-span-2 glass-panel p-5 rounded-2xl shadow-sm border border-olive/30">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-                        <h3 class="text-sm font-bold text-forest">سجل الحضور (مرتب أبجدياً تلقائياً)</h3>
-                        <div class="relative w-full sm:w-64">
-                            <input type="text" id="search-student-input" oninput="renderStudentsTable()" placeholder="بحث عن طالبة..." class="w-full bg-cream border border-olive/40 rounded-xl pr-8 pl-3 py-1.5 text-sm text-forest focus:outline-none focus:ring-2 focus:ring-olive">
-                            <i data-lucide="search" class="w-4 h-4 text-slate absolute right-2.5 top-2.5"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-right text-sm border-collapse whitespace-nowrap">
-                            <thead>
-                                <tr class="bg-sage/40 text-forest font-bold border-b-2 border-olive/40">
-                                    <th class="p-3 border-l border-olive/20">الاسم (انقري للتعديل)</th>
-                                    <th class="p-3 text-center border-l border-olive/20">حضور اليوم</th>
-                                    <th class="p-3 text-center border-l border-olive/20">التتابع (انقري للرقم)</th>
-                                    <th class="p-3 text-center">حذف</th>
-                                </tr>
-                            </thead>
-                            <tbody id="student-tbody" class="divide-y divide-olive/20"></tbody>
-                        </table>
-                    </div>
+        <!-- TABLE SECTION (COMPACT & CLEAN) -->
+        <section class="glass-panel p-4 rounded-2xl shadow-sm border border-olive/30">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mb-3">
+                <div class="text-xs font-bold text-forest">سجل الحضور (<span id="student-count">0</span> طالبة) - مرتب أبجدياً</div>
+                <div class="relative w-full sm:w-56">
+                    <input type="text" id="search-student-input" oninput="renderStudentsTable()" placeholder="بحث..." class="w-full bg-cream border border-olive/30 rounded-lg pr-7 pl-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-slate absolute right-2 top-2"></i>
                 </div>
             </div>
-
-            <!-- EXPORT TARGET (A4 SIZE SETUP FOR UP TO 50 STUDENTS) -->
-            <div class="overflow-hidden h-0 w-0 pointer-events-none">
-                <div id="export-card-target" style="width: 794px; min-height: 1123px; background-color: #FCF7EC; padding: 40px; position: relative; font-family: 'Cairo', sans-serif; color: #1F2E27; box-sizing: border-box;">
-                    
-                    <!-- Decorative Islamic Border -->
-                    <div style="position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 2px solid #AFC2AE; border-radius: 20px; pointer-events: none;"></div>
-                    <div style="position: absolute; top: 22px; left: 22px; right: 22px; bottom: 22px; border: 1px dashed #78867B; border-radius: 15px; pointer-events: none;"></div>
-
-                    <div style="position: relative; z-index: 10;">
-                        <div style="text-align: center; margin-bottom: 20px;">
-                            <h2 class="font-amiri" style="font-size: 28px; font-weight: bold; color: #1F2E27; margin: 0;">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 20px; border-bottom: 2px solid #AFC2AE; margin-bottom: 25px;">
-                            <div>
-                                <div style="font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #78867B;">🕌 المسجد: <span id="card-display-mosque" style="color:#1F2E27">--</span></div>
-                                <h3 style="font-size: 26px; font-weight: 900; margin: 0;">تقرير حلقة <span id="card-display-circle" style="color: #2b6cb0;">--</span></h3>
-                                <span style="font-size: 16px; color: #78867B; font-weight: bold; display: block; margin-top: 8px;">المعلمة: <span id="card-display-teacher" style="color:#1F2E27">--</span></span>
-                            </div>
-                            <div style="text-align: left;">
-                                <div style="font-size: 14px; font-weight: bold; color: #78867B;">التاريخ: <span id="card-export-date" style="color:#1F2E27">--</span></div>
-                                <div style="font-size: 14px; font-weight: bold; color: #047857; margin-top: 4px;">نسبة الحضور: <span id="card-export-percent">0%</span></div>
-                            </div>
-                        </div>
-
-                        <!-- EXPORT TABLES CONTAINER (Splits automatically to 2 columns for up to 50 names) -->
-                        <div id="export-tables-container" style="display: flex; gap: 20px; align-items: flex-start; justify-content: center;">
-                        </div>
-
-                        <!-- SIGNATURE AT THE LEFT CORNER OF A4 IMAGE -->
-                        <div style="position: absolute; bottom: 35px; left: 45px; font-family: 'Dancing Script', cursive; font-size: 24px; color: #78867B; font-weight: bold;">
-                            Developed by Batool Al-Koubi
-                        </div>
-                        <div style="position: absolute; bottom: 35px; right: 45px; font-size: 13px; font-weight: bold; color: #AFC2AE;">
-                            نظام هِمّة لإدارة الحلقات القرآنية
-                        </div>
-                    </div>
-                </div>
+            
+            <div class="overflow-x-auto max-h-[420px]">
+                <table class="w-full text-right text-xs border-collapse whitespace-nowrap">
+                    <thead class="sticky top-0 bg-sage/80 backdrop-blur-sm z-10">
+                        <tr class="text-forest font-bold border-b border-olive/30">
+                            <th class="p-2.5 border-l border-olive/20 w-1/2">الاسم (انقري للتعديل)</th>
+                            <th class="p-2.5 text-center border-l border-olive/20 w-1/4">حضور اليوم</th>
+                            <th class="p-2.5 text-center border-l border-olive/20 w-1/6">التتابع</th>
+                            <th class="p-2.5 text-center w-1/12">حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student-tbody" class="divide-y divide-olive/10"></tbody>
+                </table>
             </div>
         </section>
+
+        <!-- EXPORT TARGET (A4 SIZE SETUP FOR UP TO 50 NAMES) -->
+        <div class="overflow-hidden h-0 w-0 pointer-events-none">
+            <div id="export-card-target" style="width: 794px; min-height: 1123px; background-color: #FCF7EC; padding: 35px; position: relative; font-family: 'Cairo', sans-serif; color: #1F2E27; box-sizing: border-box;">
+                
+                <div style="position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 2px solid #AFC2AE; border-radius: 16px; pointer-events: none;"></div>
+                <div style="position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px; border: 1px dashed #78867B; border-radius: 12px; pointer-events: none;"></div>
+
+                <div style="position: relative; z-index: 10;">
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <h2 class="font-amiri" style="font-size: 24px; font-weight: bold; color: #1F2E27; margin: 0;">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 15px; border-bottom: 2px solid #AFC2AE; margin-bottom: 20px;">
+                        <div>
+                            <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #78867B;">🕌 المسجد: <span id="card-display-mosque" style="color:#1F2E27">--</span></div>
+                            <h3 style="font-size: 22px; font-weight: 900; margin: 0;">تقرير حلقة <span id="card-display-circle" style="color: #1F2E27;">--</span></h3>
+                            <span style="font-size: 14px; color: #78867B; font-weight: bold; display: block; margin-top: 5px;">المعلمة: <span id="card-display-teacher" style="color:#1F2E27">--</span></span>
+                        </div>
+                        <div style="text-align: left;">
+                            <div style="font-size: 13px; font-weight: bold; color: #78867B;">التاريخ: <span id="card-export-date" style="color:#1F2E27">--</span></div>
+                            <div style="font-size: 13px; font-weight: bold; color: #047857; margin-top: 3px;">نسبة الحضور: <span id="card-export-percent">0%</span></div>
+                        </div>
+                    </div>
+
+                    <!-- EXPORT TABLES CONTAINER (Compact columns for up to 50 names) -->
+                    <div id="export-tables-container" style="display: flex; gap: 15px; align-items: flex-start; justify-content: center;">
+                    </div>
+
+                    <!-- SIGNATURE AT THE LEFT CORNER OF A4 IMAGE (Fixed bottom, non-intrusive) -->
+                    <div style="position: absolute; bottom: 25px; left: 35px; font-family: 'Dancing Script', cursive; font-size: 22px; color: #78867B; font-weight: bold;">
+                        Developed by Batool Al-Koubi
+                    </div>
+                    <div style="position: absolute; bottom: 25px; right: 35px; font-size: 11px; font-weight: bold; color: #AFC2AE;">
+                        نظام هِمّة لإدارة الحلقات القرآنية
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
-        const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V5';
+        const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V6';
 
         function getTodayDateStr() {
             const today = new Date();
@@ -255,6 +253,24 @@
         };
 
         let appData = defaultInitialData;
+        let deferredPrompt = null;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('pwa-install-container').classList.remove('hidden');
+        });
+
+        document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('pwa-install-container').classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             loadData();
@@ -363,7 +379,6 @@
             saveData();
         }
 
-        // Flexible Streak calculation supporting weekly or twice-a-week sessions (up to 5 days gap between attendance entries)
         function getStreak(student) {
             if(student.manualStreak !== undefined && student.manualStreak !== null) {
                 return parseInt(student.manualStreak);
@@ -376,7 +391,7 @@
                 let d1 = new Date(sorted[i]);
                 let d2 = new Date(sorted[i-1]);
                 let diff = (d1 - d2) / (1000 * 60 * 60 * 24);
-                if (diff <= 5) streak++; // مرنة بما يكفي لتناسب مرة أو مرتين بالأسبوع
+                if (diff <= 5) streak++;
                 else break;
             }
             return streak;
@@ -387,7 +402,7 @@
             const student = circle.students.find(s => s.id === id);
             if(student) {
                 let current = getStreak(student);
-                let val = prompt("أدخلي رقم التتابع (الرقم داخل القلب):", current);
+                let val = prompt("أدخلي رقم التتابع:", current);
                 if (val !== null && val.trim() !== "" && !isNaN(val)) {
                     student.manualStreak = parseInt(val);
                     saveData();
@@ -406,7 +421,7 @@
         function renderHeartBadgeHTML(streakCount, studentId) {
             const colorClass = getHeartColorClass(streakCount);
             return `
-                <div class="heart-badge ${colorClass}" onclick="editStudentStreak('${studentId}')" title="انقري لتعديل رقم التتابع يدوياً">
+                <div class="heart-badge ${colorClass}" onclick="editStudentStreak('${studentId}')" title="تعديل التتابع">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                     </svg>
@@ -435,12 +450,13 @@
             let percent = circle.students.length > 0 ? Math.round((presentCount / circle.students.length) * 100) : 0;
 
             document.getElementById('attendance-percent-display').innerText = percent + '%';
+            document.getElementById('attendance-circle-bar').setAttribute('stroke-dasharray', `${percent}, 100`);
             document.getElementById('stat-present').innerText = presentCount;
             document.getElementById('stat-absent').innerText = absentCount;
             document.getElementById('card-export-percent').innerText = percent + '%';
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-5 text-slate">لا توجد طالبات مطابقة</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-slate">لا توجد طالبات مطابقة</td></tr>`;
                 return;
             }
 
@@ -450,19 +466,19 @@
 
                 tbody.innerHTML += `
                     <tr class="hover:bg-sage/10 transition border-b border-olive/10">
-                        <td class="p-3 font-bold text-forest border-l border-olive/20">
+                        <td class="p-2 font-bold text-forest border-l border-olive/20">
                             <span contenteditable="true" onblur="updateStudentName('${student.id}', this.innerText)" class="px-1 py-0.5 outline-none">${student.name}</span>
                         </td>
-                        <td class="p-3 text-center border-l border-olive/20">
-                            <button onclick="toggleAttendance('${student.id}')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition ${isPresent ? 'bg-forest text-cream' : 'bg-cream text-slate border border-olive/40 hover:bg-sage/40'}">
+                        <td class="p-2 text-center border-l border-olive/20">
+                            <button onclick="toggleAttendance('${student.id}')" class="px-3 py-1 rounded-md text-[11px] font-bold transition ${isPresent ? 'bg-forest text-cream' : 'bg-cream text-slate border border-olive/30 hover:bg-sage/40'}">
                                 ${isPresent ? '✓ حاضرة' : 'غائبة'}
                             </button>
                         </td>
-                        <td class="p-3 text-center border-l border-olive/20">
+                        <td class="p-2 text-center border-l border-olive/20">
                             ${renderHeartBadgeHTML(streak, student.id)}
                         </td>
-                        <td class="p-3 text-center">
-                            <button onclick="deleteStudent('${student.id}')" class="text-red-400 hover:text-red-600 p-1 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        <td class="p-2 text-center">
+                            <button onclick="deleteStudent('${student.id}')" class="text-red-400 hover:text-red-600 p-1 transition"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                         </td>
                     </tr>
                 `;
@@ -481,33 +497,32 @@
             let rows = studentsSubset.map((s, idx) => {
                 const isPresent = s.history.includes(today);
                 const streak = getStreak(s);
-                // ألوان عξ سداسية متوافقة تماماً مع الـ SVG للتصدير النقي
                 const hexColor = streak>=5?'#581c87':streak==4?'#991b1b':streak==3?'#dc2626':streak==2?'#ef4444':streak==1?'#f87171':'#cbd5e1';
                 const textColor = streak===0?'#475569':'#ffffff';
 
                 return `
                     <tr style="border-bottom: 1px solid #AFC2AE; background-color: ${idx % 2 === 0 ? '#FFFFFF' : '#FCF7EC'};">
-                        <td style="padding: 10px 12px; font-weight: bold; font-size: 14px; border-left: 1px solid #AFC2AE; color:#1F2E27;">${s.name}</td>
-                        <td style="padding: 10px 12px; text-align: center; border-left: 1px solid #AFC2AE;">
-                            <div style="display:inline-block; position:relative; width:28px; height:28px; vertical-align:middle;">
+                        <td style="padding: 7px 10px; font-weight: bold; font-size: 13px; border-left: 1px solid #AFC2AE; color:#1F2E27;">${s.name}</td>
+                        <td style="padding: 7px 10px; text-align: center; border-left: 1px solid #AFC2AE;">
+                            <div style="display:inline-block; position:relative; width:24px; height:24px; vertical-align:middle;">
                                 <svg style="width:100%; height:100%; color:${hexColor}; fill:currentColor;" viewBox="0 0 24 24">
                                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                 </svg>
-                                <span style="position:absolute; top:50%; left:50%; transform:translate(-50%, -52%); font-size:11px; font-weight:bold; color:${textColor};">${streak}</span>
+                                <span style="position:absolute; top:50%; left:50%; transform:translate(-50%, -52%); font-size:10px; font-weight:bold; color:${textColor};">${streak}</span>
                             </div>
                         </td>
-                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: ${isPresent ? '#047857' : '#B91C1C'};">${isPresent ? '✓' : '✗'}</td>
+                        <td style="padding: 7px 10px; text-align: center; font-weight: bold; font-size: 13px; color: ${isPresent ? '#047857' : '#B91C1C'};">${isPresent ? '✓' : '✗'}</td>
                     </tr>
                 `;
             }).join('');
 
             return `
-                <table style="width: 100%; max-width: 370px; border-collapse: collapse; text-align: right; background: #FFF; border: 2px solid #AFC2AE; border-radius: 8px; overflow: hidden;">
+                <table style="width: 100%; max-width: 360px; border-collapse: collapse; text-align: right; background: #FFF; border: 1.5px solid #AFC2AE; border-radius: 6px; overflow: hidden;">
                     <thead>
-                        <tr style="background-color: #D5E4CF; color: #1F2E27; font-weight: 800; font-size: 13px;">
-                            <th style="padding: 10px 12px; border-left: 1px solid #AFC2AE; width: 55%;">اسم الطالبة</th>
-                            <th style="padding: 10px 12px; border-left: 1px solid #AFC2AE; text-align: center; width: 25%;">التتابع</th>
-                            <th style="padding: 10px 12px; text-align: center; width: 20%;">اليوم</th>
+                        <tr style="background-color: #D5E4CF; color: #1F2E27; font-weight: 800; font-size: 12px;">
+                            <th style="padding: 7px 10px; border-left: 1px solid #AFC2AE; width: 55%;">اسم الطالبة</th>
+                            <th style="padding: 7px 10px; border-left: 1px solid #AFC2AE; text-align: center; width: 25%;">التتابع</th>
+                            <th style="padding: 7px 10px; text-align: center; width: 20%;">اليوم</th>
                         </tr>
                     </thead>
                     <tbody>${rows}</tbody>
@@ -522,7 +537,7 @@
                 return;
             }
 
-            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#D5E4CF', '#AFC2AE', '#2C3E35'] });
+            confetti({ particleCount: 90, spread: 60, origin: { y: 0.6 }, colors: ['#D5E4CF', '#AFC2AE', '#1F2E27'] });
 
             const today = getTodayDateStr();
             document.getElementById('card-export-date').innerText = today;
@@ -531,12 +546,9 @@
             const container = document.getElementById('export-tables-container');
             container.innerHTML = '';
 
-            // تقسيم ذكي لعمودين عند تجاوز 22 طالبة ليصل حتى 50 اسمًا ضمن مقاس A4 متناسق
-            if (sortedStudents.length > 22) {
+            if (sortedStudents.length > 24) {
                 const mid = Math.ceil(sortedStudents.length / 2);
-                const col1 = sortedStudents.slice(0, mid);
-                const col2 = sortedStudents.slice(mid);
-                container.innerHTML = buildExportTableHTML(col1, today) + buildExportTableHTML(col2, today);
+                container.innerHTML = buildExportTableHTML(sortedStudents.slice(0, mid), today) + buildExportTableHTML(sortedStudents.slice(mid), today);
             } else {
                 container.innerHTML = buildExportTableHTML(sortedStudents, today);
             }
