@@ -44,7 +44,6 @@
         .font-amiri { font-family: 'Amiri', serif; }
         .glass-panel { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(175, 194, 174, 0.5); }
         
-        /* Heart Container - Absolute Centering Correction */
         .heart-badge {
             position: relative;
             display: inline-flex;
@@ -104,7 +103,6 @@
                 </div>
             </div>
             
-            <!-- PWA INSTALL BUTTON (TOP) -->
             <div id="pwa-install-container" class="hidden">
                 <button id="pwa-install-btn" class="bg-forest text-cream px-3.5 py-1.5 rounded-xl text-xs font-bold hover:bg-forest/90 transition flex items-center gap-1.5 shadow-sm">
                     <i data-lucide="download" class="w-3.5 h-3.5"></i> تثبيت التطبيق
@@ -126,7 +124,6 @@
                 </button>
             </div>
 
-            <!-- COMPACT INPUTS ROW -->
             <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
                 <input type="text" id="input-mosque" placeholder="المسجد" oninput="updateCircleDetails()" class="w-28 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
                 <input type="text" id="input-circle-name" placeholder="اسم الحلقة" oninput="updateCircleDetails()" class="w-32 bg-cream border border-olive/30 rounded-lg px-2.5 py-1 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
@@ -136,10 +133,8 @@
 
         <!-- ATTENDANCE CIRCLE & STATS WIDGET -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-            <!-- ATTENDANCE CIRCLE CARD -->
             <div class="glass-panel p-4 rounded-2xl shadow-sm border border-olive/20 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <!-- CIRCLE CHART -->
                     <div class="relative w-14 h-14 flex items-center justify-center">
                         <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                             <path class="text-olive/30" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
@@ -150,7 +145,7 @@
                     <div>
                         <span class="block text-xs font-bold text-slate">نسبة الحضور</span>
                         <div class="flex items-center gap-1 mt-0.5 text-[10px] text-slate font-semibold">
-                            <i data-lucide="trending-up" class="w-3 h-3 text-emerald-600"></i> خط حيومي
+                            <i data-lucide="trending-up" class="w-3 h-3 text-emerald-600"></i> خط حيوي
                         </div>
                     </div>
                 </div>
@@ -160,22 +155,18 @@
                 </div>
             </div>
 
-            <!-- QUICK ADD STUDENT -->
             <div class="md:col-span-2 glass-panel p-4 rounded-2xl shadow-sm border border-olive/20 flex items-center">
                 <form onsubmit="addStudent(event)" class="flex gap-2 w-full">
                     <input type="text" id="input-student-name" placeholder="أدخلي اسم الطالبة الجديدة..." required class="flex-grow bg-cream border border-olive/40 rounded-xl px-3 py-1.5 text-xs text-forest focus:outline-none focus:ring-1 focus:ring-olive">
                     <button type="submit" class="bg-forest text-cream font-bold px-4 py-1.5 rounded-xl hover:bg-forest/90 transition text-xs shadow-sm shrink-0">
                         إضافة طالبة
                     </button>
-                    <button type="button" onclick="exportAttendanceCard()" class="bg-forest hover:bg-forest/90 text-cream font-bold px-3.5 py-1.5 rounded-xl transition text-xs flex items-center gap-1.5 shadow-md shrink-0">
-                        <i data-lucide="image" class="w-3.5 h-3.5"></i> حفظ A4
-                    </button>
                 </form>
             </div>
         </div>
 
-        <!-- TABLE SECTION (COMPACT & CLEAN) -->
-        <section class="glass-panel p-4 rounded-2xl shadow-sm border border-olive/30">
+        <!-- TABLE SECTION -->
+        <section class="glass-panel p-4 rounded-2xl shadow-sm border border-olive/30 mb-4">
             <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mb-3">
                 <div class="text-xs font-bold text-forest">سجل الحضور (<span id="student-count">0</span> طالبة) - مرتب أبجدياً</div>
                 <div class="relative w-full sm:w-56">
@@ -199,6 +190,13 @@
             </div>
         </section>
 
+        <!-- SEPARATE EXTERNAL EXPORT BUTTON (OUTSIDE FRAME) -->
+        <div class="flex justify-center mb-6">
+            <button type="button" onclick="exportAttendanceCard()" class="bg-forest hover:bg-forest/90 text-cream font-bold px-6 py-2.5 rounded-xl transition text-sm flex items-center gap-2 shadow-lg">
+                <i data-lucide="image" class="w-4 h-4"></i> حفظ تقرير الحضور كصورة A4
+            </button>
+        </div>
+
         <!-- EXPORT TARGET (A4 SIZE SETUP FOR UP TO 50 NAMES) -->
         <div class="overflow-hidden h-0 w-0 pointer-events-none">
             <div id="export-card-target" style="width: 794px; min-height: 1123px; background-color: #FCF7EC; padding: 35px; position: relative; font-family: 'Cairo', sans-serif; color: #1F2E27; box-sizing: border-box;">
@@ -207,27 +205,33 @@
                 <div style="position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px; border: 1px dashed #78867B; border-radius: 12px; pointer-events: none;"></div>
 
                 <div style="position: relative; z-index: 10;">
-                    <div style="text-align: center; margin-bottom: 15px;">
+                    <div style="text-align: center; margin-bottom: 12px;">
                         <h2 class="font-amiri" style="font-size: 24px; font-weight: bold; color: #1F2E27; margin: 0;">﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾</h2>
                     </div>
                     
-                    <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 15px; border-bottom: 2px solid #AFC2AE; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 12px; border-bottom: 2px solid #AFC2AE; margin-bottom: 15px;">
                         <div>
-                            <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #78867B;">🕌 المسجد: <span id="card-display-mosque" style="color:#1F2E27">--</span></div>
-                            <h3 style="font-size: 22px; font-weight: 900; margin: 0;">تقرير حلقة <span id="card-display-circle" style="color: #1F2E27;">--</span></h3>
-                            <span style="font-size: 14px; color: #78867B; font-weight: bold; display: block; margin-top: 5px;">المعلمة: <span id="card-display-teacher" style="color:#1F2E27">--</span></span>
+                            <div style="font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #78867B;">🕌 المسجد: <span id="card-display-mosque" style="color:#1F2E27">--</span></div>
+                            <h3 style="font-size: 20px; font-weight: 900; margin: 0;">تقرير حلقة <span id="card-display-circle" style="color: #1F2E27;">--</span></h3>
+                            <span style="font-size: 13px; color: #78867B; font-weight: bold; display: block; margin-top: 4px;">المعلمة: <span id="card-display-teacher" style="color:#1F2E27">--</span></span>
                         </div>
                         <div style="text-align: left;">
-                            <div style="font-size: 13px; font-weight: bold; color: #78867B;">التاريخ: <span id="card-export-date" style="color:#1F2E27">--</span></div>
-                            <div style="font-size: 13px; font-weight: bold; color: #047857; margin-top: 3px;">نسبة الحضور: <span id="card-export-percent">0%</span></div>
+                            <div style="font-size: 12px; font-weight: bold; color: #78867B;">التاريخ: <span id="card-export-date" style="color:#1F2E27">--</span></div>
                         </div>
+                    </div>
+
+                    <!-- ATTENDANCE SUMMARY BADGE ON EXPORT -->
+                    <div style="background-color: #D5E4CF; border: 1px solid #AFC2AE; border-radius: 8px; padding: 8px 15px; margin-bottom: 18px; display: flex; justify-content: space-around; font-size: 13px; font-weight: bold; color: #1F2E27;">
+                        <div>إجمالي الحضور: <span id="card-export-present-count" style="color: #047857;">0</span> من <span id="card-export-total-count">0</span></div>
+                        <div>الغائبات: <span id="card-export-absent-count" style="color: #B91C1C;">0</span></div>
+                        <div>نسبة الحضور: <span id="card-export-percent" style="color: #1F2E27;">0%</span></div>
                     </div>
 
                     <!-- EXPORT TABLES CONTAINER (Compact columns for up to 50 names) -->
-                    <div id="export-tables-container" style="display: flex; gap: 15px; align-items: flex-start; justify-content: center;">
+                    <div id="export-tables-container" style="display: flex; gap: 15px; align-items: flex-start; justify-content: center; margin-bottom: 50px;">
                     </div>
 
-                    <!-- SIGNATURE AT THE LEFT CORNER OF A4 IMAGE (Fixed bottom, non-intrusive) -->
+                    <!-- SIGNATURE AT THE LEFT CORNER OF A4 IMAGE (Safely at the bottom away from tables) -->
                     <div style="position: absolute; bottom: 25px; left: 35px; font-family: 'Dancing Script', cursive; font-size: 22px; color: #78867B; font-weight: bold;">
                         Developed by Batool Al-Koubi
                     </div>
@@ -240,7 +244,7 @@
     </main>
 
     <script>
-        const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V6';
+        const STORAGE_KEY = 'HIMMA_MULTI_CIRCLES_V7';
 
         function getTodayDateStr() {
             const today = new Date();
@@ -453,7 +457,6 @@
             document.getElementById('attendance-circle-bar').setAttribute('stroke-dasharray', `${percent}, 100`);
             document.getElementById('stat-present').innerText = presentCount;
             document.getElementById('stat-absent').innerText = absentCount;
-            document.getElementById('card-export-percent').innerText = percent + '%';
 
             if (filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-slate">لا توجد طالبات مطابقة</td></tr>`;
@@ -502,16 +505,16 @@
 
                 return `
                     <tr style="border-bottom: 1px solid #AFC2AE; background-color: ${idx % 2 === 0 ? '#FFFFFF' : '#FCF7EC'};">
-                        <td style="padding: 7px 10px; font-weight: bold; font-size: 13px; border-left: 1px solid #AFC2AE; color:#1F2E27;">${s.name}</td>
-                        <td style="padding: 7px 10px; text-align: center; border-left: 1px solid #AFC2AE;">
-                            <div style="display:inline-block; position:relative; width:24px; height:24px; vertical-align:middle;">
+                        <td style="padding: 6px 10px; font-weight: bold; font-size: 13px; border-left: 1px solid #AFC2AE; color:#1F2E27;">${s.name}</td>
+                        <td style="padding: 6px 10px; text-align: center; border-left: 1px solid #AFC2AE;">
+                            <div style="display:inline-block; position:relative; width:26px; height:26px; vertical-align:middle;">
                                 <svg style="width:100%; height:100%; color:${hexColor}; fill:currentColor;" viewBox="0 0 24 24">
                                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                 </svg>
                                 <span style="position:absolute; top:50%; left:50%; transform:translate(-50%, -52%); font-size:10px; font-weight:bold; color:${textColor};">${streak}</span>
                             </div>
                         </td>
-                        <td style="padding: 7px 10px; text-align: center; font-weight: bold; font-size: 13px; color: ${isPresent ? '#047857' : '#B91C1C'};">${isPresent ? '✓' : '✗'}</td>
+                        <td style="padding: 6px 10px; text-align: center; font-weight: bold; font-size: 13px; color: ${isPresent ? '#047857' : '#B91C1C'};">${isPresent ? '✓' : '✗'}</td>
                     </tr>
                 `;
             }).join('');
@@ -520,9 +523,9 @@
                 <table style="width: 100%; max-width: 360px; border-collapse: collapse; text-align: right; background: #FFF; border: 1.5px solid #AFC2AE; border-radius: 6px; overflow: hidden;">
                     <thead>
                         <tr style="background-color: #D5E4CF; color: #1F2E27; font-weight: 800; font-size: 12px;">
-                            <th style="padding: 7px 10px; border-left: 1px solid #AFC2AE; width: 55%;">اسم الطالبة</th>
-                            <th style="padding: 7px 10px; border-left: 1px solid #AFC2AE; text-align: center; width: 25%;">التتابع</th>
-                            <th style="padding: 7px 10px; text-align: center; width: 20%;">اليوم</th>
+                            <th style="padding: 6px 10px; border-left: 1px solid #AFC2AE; width: 55%;">اسم الطالبة</th>
+                            <th style="padding: 6px 10px; border-left: 1px solid #AFC2AE; text-align: center; width: 25%;">التتابع</th>
+                            <th style="padding: 6px 10px; text-align: center; width: 20%;">اليوم</th>
                         </tr>
                     </thead>
                     <tbody>${rows}</tbody>
@@ -541,6 +544,19 @@
 
             const today = getTodayDateStr();
             document.getElementById('card-export-date').innerText = today;
+
+            let presentCount = 0;
+            circle.students.forEach(s => {
+                if (s.history.includes(today)) presentCount++;
+            });
+            let totalCount = circle.students.length;
+            let absentCount = totalCount - presentCount;
+            let percent = totalCount > 0 ? Math.round((presentCount / totalCount) * 100) : 0;
+
+            document.getElementById('card-export-present-count').innerText = presentCount;
+            document.getElementById('card-export-total-count').innerText = totalCount;
+            document.getElementById('card-export-absent-count').innerText = absentCount;
+            document.getElementById('card-export-percent').innerText = percent + '%';
 
             let sortedStudents = [...circle.students].sort((a, b) => a.name.localeCompare(b.name, 'ar'));
             const container = document.getElementById('export-tables-container');
